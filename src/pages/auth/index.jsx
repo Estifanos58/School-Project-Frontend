@@ -48,8 +48,8 @@ const Auth = () => {
     const handleLogin = async ()=>{
         if(validateLogin()){
             const response = await apiClient.post(LOGIN_ROUTE,{email, password,})
-            console.log(response)
-            if(response.data.user.id){
+            console.log(response.data)
+            if(response.data.id){
                 setUserInfo(response.data.user)
                 if(response.data.user.profileSetup) navigate('/chat');
                 else navigate('/profile');
@@ -61,7 +61,7 @@ const Auth = () => {
         if(validateSignUp()){
             console.log(email, password)
             const response = await apiClient.post(SIGNUP_ROUTES,{email,password})
-            console.log(response)
+            console.log(response.status)
             if(response.status === 201){
                 setUserInfo(response.data.user)
                 navigate('/profile')
@@ -71,9 +71,9 @@ const Auth = () => {
 
     return (
         <div className="h-[100vh] w-[100vw] flex items-center justify-center">
-            <div className="h-[80vh] bg-white border-2 border-white text-opacity-90 shadow-2xl w-[80vw] md:w-[90vw] lg:w-[70vw] xl:w-[60vw] rounded-3xl grid xl:grid-cols-2">
-                <div className="flex flex-col gap-10 items-center justify-center">
-                    <div className="flex items-center justify-center flex-col">
+            <div className=" bg-white h-[90%] border-2 border-white text-opacity-90 shadow-2xl w-[80vw] md:w-[90vw] lg:w-[70vw] xl:w-[60vw] rounded-3xl">
+                <div className="flex  flex-col w-[100%] bg-white h-[100%] items-center justify-space-between">
+                    <div className="flex  mb-5 items-center justify-center flex-col">
                         <div className="flex items-center justify-center">
                             <h1 className="text-5xl font-bold md:text-6xl">Welcome</h1>
                             <img src={Victory} alt="Victory Emoji" className="h-[100px]" />
@@ -114,10 +114,7 @@ const Auth = () => {
                             </TabsContent>
                         </Tabs>
                     </div>
-                </div>
-                <div className='hidden xl:flex justify-center items-center'>
-                    <img src={Background} alt="" className='h-[600px]'/>
-                </div>
+                </div>   
             </div>
         </div>
     )
