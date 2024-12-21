@@ -6,6 +6,7 @@ import { GET_DM_CONTACTS_ROUTES, GET_USER_CHANNELS_ROUTE } from '@/utils/constan
 import { useAppStore } from '@/store';
 import ContactList from '@/components/contact-list';
 import CreateChannel from './components/create-channel';
+import KASINA from '@/assets/KASINA.png';
 
 const ContactContainer = () => {
 
@@ -33,7 +34,7 @@ const ContactContainer = () => {
   console.log("Here "+channels)
 
   return (
-    <div className='relative md:w-[35vw] lg:w-[30vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f303b] w-full'>
+    <div className='relative md:w-[35vw] lg:w-[30vw] xl:w-[25vw] pr-5 bg-[#1b1c24] border-r-2 border-[#2f303b] w-full'>
      <div className="pt-3">
       <Logo/>
      </div>
@@ -90,7 +91,7 @@ export const Logo = () => {
           fill="#a16ee8"
         ></path>{" "}
       </svg>
-      <span className="text-3xl font-semibold ">Syncronus</span>
+      <span className="text-3xl font-semibold ">KASINA </span>
     </div>
   );
 };
