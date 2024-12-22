@@ -50,7 +50,7 @@ const App = () => {
   }, [userInfo, setUserInfo]);  
 
   if (isLoading) {  
-    return <div>Loading ...</div>;  
+    return <div className='h-[100vh] w-[100vw] flex justify-center items-center font-bold text-2xl'>Loading ...</div>;  
   }  
 
   return (  
