@@ -12,50 +12,55 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { apiClient } from "@/lib/api-client";
-import { SEARCH_CONTACTS_ROUTES } from "@/utils/constants";
+import { SEARCH_CONTACTS_ROUTES, HOST } from "@/utils/constants";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar } from "@/components/ui/avatar";
 import { AvatarImage } from "@/components/ui/avatar";
 import { getColor } from "@/lib/utils";
-import { HOST } from "@/utils/constants";
 import { useAppStore } from "@/store";
 
 const NewDm = () => {
-  const { setSelectedChatType, setSelectedChatData} = useAppStore();
+  const { setSelectedChatType, setSelectedChatData } = useAppStore();
   const [openNewContact, setOpenNewContact] = useState(false);
+  const [searchedContacts, setSearchedContacts] = useState([]);
 
+  // Function to search contacts
   const searchContacts = async (searchTerm) => {
     try {
       if (searchTerm.length > 0) {
+        // Send POST request to search endpoint
         const response = await apiClient.post(
           SEARCH_CONTACTS_ROUTES,
-          { searchTerm },
+          { searchTerm }, // Send searchTerm in the request body
           { withCredentials: true }
         );
-        console.log("response data: "+response.data.contacts)
-        if (response.status === 200 && response.data.contacts) {
-          setSearchedContacts(response.data.contacts);
+
+        console.log("Response Data:", response.data); // Log raw data
+        console.log("Response Status:", response.status);
+
+        if (response.status === 200) {
+          setSearchedContacts(response.data); // Store contacts
+        } else {
+          setSearchedContacts([]);
         }
       } else {
         setSearchedContacts([]);
       }
     } catch (error) {
-      console.log({ error });
+      console.error("Error searching contacts:", error);
     }
   };
-  const [searchedContacts, setSearchedContacts] = useState([]);
-  console.log(searchedContacts)
 
+  // Select a new contact
   const selectNewContact = (contact) => {
     setOpenNewContact(false);
     setSelectedChatType("contact");
     setSelectedChatData(contact);
     setSearchedContacts([]);
-  }
+  };
 
   return (
     <>
@@ -86,12 +91,16 @@ const NewDm = () => {
             />
           </div>
           <ScrollArea className="h-[250px]">
-            <div className="flex flex-col gep-5">
-              {searchedContacts?.map((contact, index) => (
-                <div className="flex gap-3 items-center cursor-pointer" key={index} onClick={()=>selectNewContact(contact)}>
+            <div className="flex flex-col gap-5">
+              {searchedContacts.map((contact, index) => (
+                <div
+                  className="flex gap-3 items-center cursor-pointer"
+                  key={index}
+                  onClick={() => selectNewContact(contact)}
+                >
                   <div className="w-12 h-12 relative">
                     <Avatar className="h-12 w-12  rounded-full overflow-hidden">
-                      {contact?.image ? (
+                      {contact.image ? (
                         <AvatarImage
                           src={`${HOST}${contact.image}`}
                           alt="profile"
@@ -100,21 +109,21 @@ const NewDm = () => {
                       ) : (
                         <div
                           className={`uppercase h-12 w-12 text-lg border-[1px] flex items-center justify-center rounded-full ${getColor(
-                            contact?.color
+                            contact.color
                           )}`}
                         >
-                          {contact?.firstname
-                            ? contact?.firstname.split("").shift()
-                            : contact.email.split("").shift()}
+                          {contact.firstname
+                            ? contact.firstname.charAt(0)
+                            : contact.email.charAt(0)}
                         </div>
                       )}
                     </Avatar>
                   </div>
                   <div className="flex flex-col">
                     <span>
-                       {contact?.firstname && contact?.lastname
-                      ? `${contact.firstname} ${contact.lastname}`
-                      : contact.email}
+                      {contact.firstname && contact.lastname
+                        ? `${contact.firstname} ${contact.lastname}`
+                        : contact.email}
                     </span>
                     <span className="text-xs">{contact.email}</span>
                   </div>
@@ -124,7 +133,7 @@ const NewDm = () => {
           </ScrollArea>
           {searchedContacts.length <= 0 && (
             <div className="text-2xl flex flex-col justify-center items-center h-[100%]">
-              Their is no Contact😒
+              There is no Contact 😒
             </div>
           )}
         </DialogContent>
