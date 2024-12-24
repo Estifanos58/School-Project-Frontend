@@ -69,13 +69,13 @@ const CreateChannel = () => {
             withCredentials: true,
           }
         );
-        console.log(response.status, response.data.channel);
+        console.log(response.status, response.data);
 
         if (response.status === 201) {
           setChannelName("");
           setSelectedContacts([]);
           setNewChannelModel(false);
-          addChannel(response.data.channel);
+          addChannel(response.data);
         }
       }
     } catch (error) {
