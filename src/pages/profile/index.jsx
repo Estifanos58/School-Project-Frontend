@@ -21,6 +21,7 @@ const Profile = () => {
   const [selectedColor, setSelectedColor] = useState(0);
   const navigate = useNavigate();
   const fileinputRef = useRef(null);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(()=>{
     if(userInfo.profileSetup){
@@ -52,6 +53,7 @@ const Profile = () => {
   const saveChanges = async () => {
     if (validateProfile()) {
       try {
+        setLoading(true);
         const response = await apiClient.put(
           UPDATE_PROFILE_ROUTE,
           { firstname: firstName, lastname: LastName, color: selectedColor },
@@ -60,10 +62,12 @@ const Profile = () => {
         if(response.status === 200 && response.data){
           console.log("Success")
           setUserInfo({...response.data})
+          setLoading(false);
           toast.success("Profile updated successfully");
           navigate("/chat")
         }
       } catch (err) {
+        setLoading(false)
         console.log(err.message);
       }
     }
@@ -211,7 +215,7 @@ const Profile = () => {
             className="h-16 w-full bg-purple-700 hover:bg-purple-900 transition-all duration-300"
             onClick={saveChanges}
           >
-            Save Changes
+            {isLoading ? "Loading..." : "Save Profile"}
           </Button>
         </div>
       </div>
