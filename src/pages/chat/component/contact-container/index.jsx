@@ -22,8 +22,9 @@ const ContactContainer = () => {
 
     const getChannels = async ()=>{
       const response = await apiClient.get(GET_USER_CHANNELS_ROUTE, {withCredentials: true});
-      if(response.data.channels){
-        setChannels(response.data.channels)
+      console.log(response.data+" "+response.status);
+      if(response.data){
+        setChannels(response.data)
       }
     }
 
