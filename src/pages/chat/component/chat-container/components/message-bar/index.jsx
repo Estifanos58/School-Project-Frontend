@@ -32,31 +32,32 @@ const MessageBar = () => {
     setMessage((msg) => msg + emoji.emoji);
   };
 
-  const handleSendMessage = async () => { 
-    // console.log(selectedChatType) 
+  const handleSendMessage = () => {
     if (message.trim() === "") return; // Prevent sending empty messages
-    // console.log(socket)  
-    if (selectedChatType === "contact") {  
-      socket.current?.emit("sendMessage", {  
-        sender: userInfo.id,  
-        content: message,  
-        recipient: selectedChatData._id,  
-        messageType: "text",  
-        fileUrl: undefined,  
-      });  
-      
-    }else if(selectedChatType === "channel") {
-      // console.log(userInfo.id, message, selectedChatData._id)
-      socket.current?.emit("send-channel-message", {  
-        sender: userInfo.id,  
-        content: message,  
-        channelId: selectedChatData._id,  
-        messageType: "text",  
-        fileUrl: undefined,  
+  
+    const payload = {
+      sender: userInfo.id,
+      content: message,
+      recipient: selectedChatData._id,
+      messageType: "text",
+      fileUrl: undefined,
+    };
+  
+    if (selectedChatType === "contact") {
+      socket.sendMessage({
+        ...payload,
+        recipient: selectedChatData._id,
       });
-    } 
-    setMessage(""); // Clear the message after sending   
+    } else if (selectedChatType === "channel") {
+      socket.sendMessage({
+        ...payload,
+        channelId: selectedChatData._id,
+      });
+    }
+  
+    setMessage(""); // Clear the message after sending
   };
+  
 
   const handleAttachmentClick = ()=>{
     if(fileInputRef.current) {
@@ -64,42 +65,57 @@ const MessageBar = () => {
     }
   }
 
-  const handleAttachmentChange = async()=>{
-    try{
-        const file = event.target.files[0];
-        if(file){
-          const formData = new FormData();
-          formData.append("file", file);
-          setIsUploading(true);
-          const response = await apiClient.post(UPLOAD_FILE_ROUTE, formData,{withCredentials: true, onUploadProgress:data => { setFileUploadProgress(Math.round((100 * data.loaded) / data.total)); }});
-
-          if(response.status === 200 && response.data){
-            setIsUploading(false);
-            if(selectedChatType === "contact"){
-              socket.current?.emit("sendMessage", {  
-                sender: userInfo.id,  
-                content: undefined,  
-                recipient: selectedChatData._id,  
-                messageType: "file",  
-                fileUrl: response.data.filePath,  
-              }); 
-            }else if(selectedChatType === "channel"){
-              socket.current?.emit("send-channel-message", {  
-                sender: userInfo.id,  
-                content: undefined,  
-                channelId: selectedChatData._id,  
-                messageType: "file",  
-                fileUrl: response.data.filePath,  
-              })
-            } 
+  const handleAttachmentChange = async (event) => {
+    try {
+      const file = event.target.files[0];
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+  
+        setIsUploading(true);
+  
+        const response = await apiClient.post(
+          UPLOAD_FILE_ROUTE,
+          formData,
+          {
+            withCredentials: true,
+            onUploadProgress: (data) => {
+              setFileUploadProgress(
+                Math.round((100 * data.loaded) / data.total)
+              );
+            },
+          }
+        );
+  
+        if (response.status === 200 && response.data) {
+          setIsUploading(false);
+  
+          const payload = {
+            sender: userInfo.id,
+            content: undefined,
+            fileUrl: response.data.filePath,
+            messageType: "file",
+          };
+  
+          if (selectedChatType === "contact") {
+            socket.sendMessage({
+              ...payload,
+              recipient: selectedChatData._id,
+            });
+          } else if (selectedChatType === "channel") {
+            socket.sendMessage({
+              ...payload,
+              channelId: selectedChatData._id,
+            });
           }
         }
-        console.log({file})
-    }catch(error){
+      }
+    } catch (error) {
       setIsUploading(false);
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
+  
 
   return (
     <div className="h-[10vh] absolute bottom-0 w-[80vw] bg-[#1c1d25] flex justify-center items-center px-8 mb-6 gap-6">
