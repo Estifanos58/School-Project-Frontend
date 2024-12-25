@@ -1,7 +1,7 @@
 import { useAppStore } from "@/store";
-import { HOST } from "@/utils/constants";
 import { createContext, useContext, useEffect, useRef } from "react";
-import { io } from "socket.io-client";
+import * as Stomp from "stompjs";
+import SockJS from "sockjs-client";
 
 const SocketContext = createContext(null);
 
@@ -10,56 +10,78 @@ export const useSocket = () => {
 };
 
 export const SocketProvider = ({ children }) => {
-  const socket = useRef();
+  const stompClient = useRef(null);
   const { userInfo } = useAppStore();
 
   useEffect(() => {
     if (userInfo) {
-      socket.current = io(HOST, {
-        withCredentials: true,
-        query: { userId: userInfo.id },
-      });
-      socket.current.on("connect", () => {
-        console.log("Connected to socket server");
+      // Establish WebSocket connection with SockJS and STOMP
+      const socket = new SockJS("http://localhost:9090/ws");
+      stompClient.current = Stomp.over(socket);
+
+      stompClient.current.connect({}, () => {
+        console.log("WebSocket connected!");
+
+        // Subscribe to a topic
+        stompClient.current.subscribe("/topic/public", (message) => {
+          handleReceiveMessage(JSON.parse(message.body));
+        });
+
+        // Send the 'addUser' message when connected
+        const addUserMessage = {
+          sender: userInfo.username,
+          type: "JOIN",
+        };
+        stompClient.current.send("/app/chat.addUser", {}, JSON.stringify(addUserMessage));
       });
 
-      const handleRecieveMessage = (message) => {
-        const { selectedChatData, selectedChatType, addMessage, addContactsInDmContacts } =
-          useAppStore.getState();
-        // console.log(message);
-        if (
-          selectedChatType !== undefined &&
-          (selectedChatData._id === message.sender._id ||
-            selectedChatData._id === message.recipient._id)
-        ) {
-          // console.log("message rec ", message);
-          addMessage(message);
-        }
-        addContactsInDmContacts(message);
+      stompClient.current.onclose = () => {
+        console.log("WebSocket disconnected!");
       };
 
-      const handleRecieveChannelMessage = (message) => {
-        const { selectedChatData, selectedChatType, addMessage , addChannelInChannelList } =
-          useAppStore.getState();
-          console.log(message+ " received for channel")
-        if (
-          selectedChatType !== undefined &&
-          selectedChatData._id === message.channelId
-        ) {
-          addMessage(message);
-        }
-        addChannelInChannelList(message);
-      };
-
-      socket.current.on("recieveMessage", handleRecieveMessage);
-      socket.current.on("recieve-channel-message", handleRecieveChannelMessage);
       return () => {
-        socket.current.disconnect();
+        if (stompClient.current) {
+          stompClient.current.disconnect();
+        }
       };
     }
   }, [userInfo]);
 
+  // Handle received messages
+  const handleReceiveMessage = (message) => {
+    const {
+      selectedChatData,
+      selectedChatType,
+      addMessage,
+      addContactsInDmContacts,
+      addChannelInChannelList,
+    } = useAppStore.getState();
+
+    if (
+      selectedChatType !== undefined &&
+      (selectedChatData._id === message.sender ||
+        selectedChatData._id === message.recipient)
+    ) {
+      addMessage(message);
+    }
+
+    // Update contacts or channel lists
+    addContactsInDmContacts(message);
+    addChannelInChannelList(message);
+  };
+
+  // Send message function
+  const sendMessage = (message) => {
+    if (stompClient.current && stompClient.current.connected) {
+      stompClient.current.send("/app/chat.sendMessage", {}, JSON.stringify(message));
+    } else {
+      console.error("WebSocket is not connected!");
+    }
+  };
+
   return (
-    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
+    <SocketContext.Provider value={{ sendMessage }}>
+      {children}
+    </SocketContext.Provider>
   );
 };
