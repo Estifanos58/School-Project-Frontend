@@ -32,7 +32,8 @@ const ContactContainer = () => {
     getChannels();
   },[setChannels, setDirectMessagesContacts]);
 
-  console.log("Here "+channels)
+  // console.log("Here "+channels)
+  console.log("Direct Messages "+ directMessagesContacts)
 
   return (
     <div className='relative md:w-[40vw] lg:w-[30vw] xl:w-[25vw] pr-5 bg-[#1b1c24] border-r-2 border-[#2f303b] w-full'>

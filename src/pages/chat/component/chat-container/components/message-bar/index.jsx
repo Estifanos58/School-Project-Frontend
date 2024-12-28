@@ -38,18 +38,20 @@ const MessageBar = () => {
     const payload = {
       sender: userInfo.id,
       content: message,
-      recipient: selectedChatData._id,
+      recipient: selectedChatData.id,
       messageType: "text",
       fileUrl: undefined,
     };
+    console.log(payload)
   
     if (selectedChatType === "contact") {
-      socket.sendMessage({
+      console.log("contact info"+ JSON.stringify(selectedChatData))
+      socket?.sendMessage({
         ...payload,
-        recipient: selectedChatData._id,
+        recipient: selectedChatData.id,
       });
     } else if (selectedChatType === "channel") {
-      socket.sendMessage({
+      socket?.sendMessage({
         ...payload,
         channelId: selectedChatData._id,
       });

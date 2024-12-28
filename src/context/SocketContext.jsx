@@ -59,12 +59,12 @@ export const SocketProvider = ({ children }) => {
 
     if (
       selectedChatType !== undefined &&
-      (selectedChatData._id === message.sender ||
-        selectedChatData._id === message.recipient)
+      (selectedChatData.id === message.sender ||
+        selectedChatData.id === message.recipient)
     ) {
       addMessage(message);
     }
-
+    console.log("Received message "+message);
     // Update contacts or channel lists
     addContactsInDmContacts(message);
     addChannelInChannelList(message);
@@ -72,6 +72,7 @@ export const SocketProvider = ({ children }) => {
 
   // Send message function
   const sendMessage = (message) => {
+    console.log("send message" + {...message})
     if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send("/app/chat.sendMessage", {}, JSON.stringify(message));
     } else {

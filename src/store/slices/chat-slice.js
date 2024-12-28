@@ -41,19 +41,19 @@ export const createChatSlice = (set, get) => ({
           recipient:
             selectedChatType === "channel"
               ? message.recipient
-              : message.recipient._id,
+              : message.recipient.id,
           sender:
             selectedChatType === "channel"
               ? message.sender
-              : message.sender._id,
+              : message.sender.id,
         },
       ],
     });
   },
   addChannelInChannelList: (message) => {
     const channels = get().channels;
-    const data = channels.find((channel)=> channel._id === message.channelId);
-    const index = channels.findIndex((channel)=> channel._id === message.channelId)
+    const data = channels.find((channel)=> channel.id === message.channelId);
+    const index = channels.findIndex((channel)=> channel.id === message.channelId)
     if(index !== -1 && index !== undefined){
       channels.splice(index,1);
       channels.unshift(data);
@@ -61,12 +61,16 @@ export const createChatSlice = (set, get) => ({
   },
 
   addContactsInDmContacts: (message)=>{
+    console.log("contact In dm" +JSON.stringify(message))
     const userId = get().userInfo.id;
-    const fromId = message.sender._id === userId ? message.recipient._id : message.sender._id;
-    const fromData = message.sender._id === userId ? message.recipient : message.sender;
+    const fromId = message.sender === userId ? message.recipient : message.sender;
+    const fromData = message.sender === userId ? message.recipient : message.sender;
     const dmContacts = get().directMessagesContacts;
-    const data = dmContacts.find((contact)=> contact._id === fromId);
-    const index = dmContacts.findIndex((contact)=> contact._id === fromId);
+    const data = dmContacts.find((contact)=>
+      console.log("contact" + JSON.stringify(contact))
+      // contact.id === fromId
+      );
+    const index = dmContacts.findIndex((contact)=> contact.id === fromId);
     if(index !== 1 && index !== undefined){
       dmContacts.splice(index,1);
       dmContacts.unshift(data);
