@@ -19,29 +19,51 @@ export const SocketProvider = ({ children }) => {
       const socket = new SockJS("http://localhost:9090/ws");
       stompClient.current = Stomp.over(socket);
 
-      stompClient.current.connect({}, () => {
-        console.log("WebSocket connected!");
+      // Connect with user-specific headers
+      stompClient.current.connect(
+        { username: userInfo.id }, // Send user ID in headers
+        () => {
+          console.log("WebSocket connected!");
 
-        // Subscribe to a topic
-        stompClient.current.subscribe("/topic/public", (message) => {
-          handleReceiveMessage(JSON.parse(message.body));
-        });
+          // Subscribe to user-specific queues
+          stompClient.current.subscribe("/topic/public", (message) => {
+            console.log("Received direct message: ", message.body);
+            handleReceiveMessage(JSON.parse(message.body));
+          });
 
-        // Send the 'addUser' message when connected
-        const addUserMessage = {
-          sender: userInfo.username,
-          type: "JOIN",
-        };
-        stompClient.current.send("/app/chat.addUser", {}, JSON.stringify(addUserMessage));
-      });
+          stompClient.current.subscribe("/user/queue/channel-messages", (message) => {
+            console.log("Received channel message: ", message.body);
+            handleReceiveMessage(JSON.parse(message.body));
+          });
 
+          // Optional broadcast subscription for testing
+          stompClient.current.subscribe("/topic/test", (message) => {
+            console.log("Broadcast Message Received: ", message.body);
+          });
+
+          // Notify backend that the user has joined
+          const addUserMessage = {
+            sender: userInfo.username,
+            type: "JOIN",
+          };
+          stompClient.current.send("/app/chat.addUser", {}, JSON.stringify(addUserMessage));
+        },
+        (error) => {
+          console.error("WebSocket connection failed: ", error);
+        }
+      );
+
+      // Handle WebSocket disconnection
       stompClient.current.onclose = () => {
         console.log("WebSocket disconnected!");
       };
 
+      // Cleanup connection on component unmount
       return () => {
         if (stompClient.current) {
-          stompClient.current.disconnect();
+          stompClient.current.disconnect(() => {
+            console.log("WebSocket disconnected!");
+          });
         }
       };
     }
@@ -57,26 +79,34 @@ export const SocketProvider = ({ children }) => {
       addChannelInChannelList,
     } = useAppStore.getState();
 
+    // Process only if the current chat matches the sender or recipient
     if (
       selectedChatType !== undefined &&
       (selectedChatData.id === message.sender ||
         selectedChatData.id === message.recipient)
     ) {
-      console.log("MESSAGE WILL BE RESEVIED TRUE IN SOCKETCONTEXT");
-      console.log("THIS IS WHAT IS BEING SENT TO ADD MESSAGE", JSON.stringify(message));
+      console.log("MESSAGE RECEIVED IN SOCKET CONTEXT");
+      console.log(
+        "THIS IS WHAT IS BEING SENT TO ADD MESSAGE",
+        JSON.stringify(message)
+      );
       addMessage(message);
     }
-    // console.log("Received message "+ JSON.stringify(message));
-    // Update contacts or channel lists
+
+    // Update contact or channel lists if required
     // addContactsInDmContacts(message);
     // addChannelInChannelList(message);
   };
 
   // Send message function
   const sendMessage = (message) => {
-    console.log("send message" + {...message})
+    console.log("Sending message: ", { ...message });
     if (stompClient.current && stompClient.current.connected) {
-      stompClient.current.send("/app/chat.sendMessage", {}, JSON.stringify(message));
+      stompClient.current.send(
+        "/app/chat.sendMessage",
+        {},
+        JSON.stringify(message)
+      );
     } else {
       console.error("WebSocket is not connected!");
     }
