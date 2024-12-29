@@ -62,12 +62,14 @@ export const SocketProvider = ({ children }) => {
       (selectedChatData.id === message.sender ||
         selectedChatData.id === message.recipient)
     ) {
+      console.log("MESSAGE WILL BE RESEVIED TRUE IN SOCKETCONTEXT");
+      console.log("THIS IS WHAT IS BEING SENT TO ADD MESSAGE", JSON.stringify(message));
       addMessage(message);
     }
-    console.log("Received message "+message);
+    // console.log("Received message "+ JSON.stringify(message));
     // Update contacts or channel lists
-    addContactsInDmContacts(message);
-    addChannelInChannelList(message);
+    // addContactsInDmContacts(message);
+    // addChannelInChannelList(message);
   };
 
   // Send message function

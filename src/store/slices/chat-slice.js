@@ -29,27 +29,42 @@ export const createChatSlice = (set, get) => ({
       selectedChatData: undefined,
       selectedChatMessages: [],
     }),
-  addMessage: (message) => {
-    const selectedChatMessages = get().selectedChatMessages;
-    const selectedChatType = get().selectedChatType;
+    addMessage: (message) => {
+      const selectedChatMessages = get().selectedChatMessages;
+    
+      set({
+        selectedChatMessages: [
+          ...selectedChatMessages,
+          {
+            ...message,
+            recipient: message.recipient, // Use as is (string ID)
+            sender: message.sender,     // Use as is (string ID)
+          },
+        ],
+      });
+    },
+    
+  // addMessage: (message) => {
+  //   const selectedChatMessages = get().selectedChatMessages;
+  //   const selectedChatType = get().selectedChatType;
 
-    set({
-      selectedChatMessages: [
-        ...selectedChatMessages,
-        {
-          ...message,
-          recipient:
-            selectedChatType === "channel"
-              ? message.recipient
-              : message.recipient.id,
-          sender:
-            selectedChatType === "channel"
-              ? message.sender
-              : message.sender.id,
-        },
-      ],
-    });
-  },
+  //   set({
+  //     selectedChatMessages: [
+  //       ...selectedChatMessages,
+  //       {
+  //         ...message,
+  //         recipient:
+  //           selectedChatType === "channel"
+  //             ? message.recipient
+  //             : message.recipient.id,
+  //         sender:
+  //           selectedChatType === "channel"
+  //             ? message.sender
+  //             : message.sender.id,
+  //       },
+  //     ],
+  //   });
+  // },
   addChannelInChannelList: (message) => {
     const channels = get().channels;
     const data = channels.find((channel)=> channel.id === message.channelId);

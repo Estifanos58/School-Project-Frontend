@@ -21,12 +21,12 @@ function ContactList({ contacts, isChannel = false }) {
     }
   };
 
-  console.log("Contacts" + JSON.stringify(contacts));
+  // console.log("Contacts" + JSON.stringify(contacts));
 
   return (
     <div className="mt-5">
       {contacts?.map((contact) => {
-        console.log("Contact List "+ JSON.stringify(contact))
+        // console.log("Contact List "+ JSON.stringify(contact))
         // return (
         //   <div
         //     className={`pl-10 py-2 transition-all duration-300 cursor-pointer ${

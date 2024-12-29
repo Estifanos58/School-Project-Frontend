@@ -42,7 +42,7 @@ const MessageBar = () => {
       messageType: "text",
       fileUrl: undefined,
     };
-    console.log(payload)
+    console.log("Sent message from Messagebar" + JSON.stringify(payload))
   
     if (selectedChatType === "contact") {
       console.log("contact info"+ JSON.stringify(selectedChatData))

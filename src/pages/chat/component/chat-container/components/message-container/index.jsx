@@ -24,6 +24,8 @@ const MessageContainer = () => {
   const [showImage, setshowImage] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
 
+  console.log("THIS IS THE SELECTED CHAT MESSAGE FROM CONTAINER" + JSON.stringify(selectedChatMessages))
+
   useEffect(() => {
     const getMessages = async () => {
       try {
