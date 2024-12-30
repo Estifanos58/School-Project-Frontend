@@ -24,24 +24,27 @@ const MessageContainer = () => {
   const [showImage, setshowImage] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
 
-  console.log("THIS IS THE SELECTED CHAT MESSAGE FROM CONTAINER" + JSON.stringify(selectedChatMessages))
+  // console.log("THIS IS THE SELECTED CHAT MESSAGE FROM CONTAINER" + JSON.stringify(selectedChatMessages))
+  console.log("THIS IS the user we have "+ JSON.stringify(selectedChatData.id))
 
   useEffect(() => {
     const getMessages = async () => {
+      console.log("THIS IS the user we have "+ JSON.stringify(selectedChatData))
       try {
         const response = await apiClient.post(
           GET_ALL_MESSAGES_ROUTE,
-          { id: selectedChatData._id },
+          { id: selectedChatData.id },
           { withCredentials: true }
         );
-
-        if (response.data.messages) {
-          setSelectedChatMessages(response.data.messages);
+        console.log(response.data, "this is the response i get from message");
+        if (response.data) {
+          setSelectedChatMessages(response.data);
         }
       } catch (error) {
         console.log(error);
       }
     };
+    getMessages();
 
     const getChannelMessages = async ()=> {
       try {

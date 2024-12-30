@@ -63,6 +63,7 @@ const Auth = () => {
                 }
             } catch (error) {
                 setLoading(false)
+                console.log("Error while Login" + error);
                 toast.error("No internet connection")
             }
             
@@ -89,8 +90,10 @@ const Auth = () => {
                     toast.error("Invalid Credentials")
                 }
             } catch (error) {
+                console.log("Error while Signup" + error);
                 setLoading(false)
-                toast.error("No internet connection")
+                if(error != "Cannot read properties of undefined (reading 'profileSetup')")
+                    toast.error("No internet connection")
             }
             
         }else{
