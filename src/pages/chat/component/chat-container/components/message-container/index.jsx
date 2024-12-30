@@ -132,16 +132,17 @@ const MessageContainer = () => {
   };
 
   const renderDMMessages = (message) => (
+    console.log("MEssaage "+JSON.stringify(message)),
     <div
       className={`flex ${
-        message.sender === selectedChatData._id
+        message.sender === selectedChatData.id
           ? "justify-start"
           : "justify-end"
       } my-1`}
     >
       <div
         className={`${
-          message.sender !== selectedChatData._id
+          message.sender !== selectedChatData.id
             ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50"
             : "bg-[#2a2b33]/5 text-white/80 border-white/20"
         } border inline-block p-3 rounded-lg max-w-[70%] break-words shadow-md transition-transform duration-200 transform hover:scale-105`}
@@ -151,7 +152,7 @@ const MessageContainer = () => {
       {message.messageType === "file" && (
         <div
           className={`${
-            message.sender !== selectedChatData._id
+            message.sender !== selectedChatData.id
               ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50"
               : "bg-[#2a2b33]/5 text-white/80 border-white/20"
           } border inline-block p-3 rounded-lg max-w-[70%] break-words shadow-md transition-transform duration-200 transform hover:scale-105`}
