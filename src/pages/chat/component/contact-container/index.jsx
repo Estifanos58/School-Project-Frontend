@@ -15,7 +15,7 @@ const ContactContainer = () => {
   useEffect(()=>{
     const getContacts = async ()=>{
       const response = await apiClient.get(GET_DM_CONTACTS_ROUTES, {withCredentials: true});
-      console.log(response.data+"Contact Detail "+response.status);
+      // console.log(response.data+"Contact Detail "+response.status);
       if(response.data){
         setDirectMessagesContacts(response.data)
       }
@@ -34,7 +34,7 @@ const ContactContainer = () => {
   },[setChannels, setDirectMessagesContacts]);
 
   // console.log("Here "+channels)
-  console.log("Direct Messages "+ JSON.stringify(directMessagesContacts))
+  // console.log("Direct Messages "+ JSON.stringify(directMessagesContacts))
 
   return (
     <div className='relative md:w-[40vw] lg:w-[30vw] xl:w-[25vw] pr-5 bg-[#1b1c24] border-r-2 border-[#2f303b] w-full'>

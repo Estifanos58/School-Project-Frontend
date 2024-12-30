@@ -25,18 +25,18 @@ const MessageContainer = () => {
   const [imageUrl, setImageUrl] = useState(null);
 
   // console.log("THIS IS THE SELECTED CHAT MESSAGE FROM CONTAINER" + JSON.stringify(selectedChatMessages))
-  console.log("THIS IS the user we have "+ JSON.stringify(selectedChatData.id))
+  // console.log("THIS IS the user we have "+ JSON.stringify(selectedChatData.id))
 
   useEffect(() => {
     const getMessages = async () => {
-      console.log("THIS IS the user we have "+ JSON.stringify(selectedChatData))
+      // console.log("THIS IS the user we have "+ JSON.stringify(selectedChatData))
       try {
         const response = await apiClient.post(
           GET_ALL_MESSAGES_ROUTE,
           { id: selectedChatData.id },
           { withCredentials: true }
         );
-        console.log(response.data, "this is the response i get from message");
+        // console.log(response.data, "this is the response i get from message");
         if (response.data) {
           setSelectedChatMessages(response.data);
         }
@@ -53,9 +53,9 @@ const MessageContainer = () => {
           { withCredentials: true }
         );
        
-        if (response.data.messages) {
-          console.log(response.data.messages,"group")
-          setSelectedChatMessages(response.data.messages);
+        if (response.data) {
+          console.log(response.data,"group")
+          setSelectedChatMessages(response.data);
         }
       } catch (error) {
         console.log(error);
@@ -190,15 +190,16 @@ const MessageContainer = () => {
   );
 
   const renderChannelMessage = (message) => {
+    console.log("Channel Message "+JSON.stringify(message));
     return (
       <div
         className={`mt-5 ${
-          message.sender._id !== userInfo.id ? "text-left" : "text-right"
+          message.sender.id !== userInfo.id ? "text-left" : "text-right"
         }`}
       >
         <div
           className={`${
-            message.sender._id !== userInfo._id
+            message.sender.id !== userInfo.id
               ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50"
               : "bg-[#2a2b33]/5 text-white/80 border-white/20"
           } border inline-block p-3 rounded-lg max-w-[70%] break-words shadow-md ml-9 transition-transform duration-200 transform hover:scale-105`}
@@ -209,7 +210,7 @@ const MessageContainer = () => {
             {message.messageType === "file" && (
             <div
               className={`${
-                message.sender._id === userInfo._id
+                message.sender.id === userInfo._id
                   ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50"
                   : "bg-[#2a2b33]/5 text-white/80 border-white/20"
               } border inline-block p-3 rounded-lg max-w-[70%] break-words shadow-md transition-transform duration-200 transform hover:scale-105`}
@@ -241,7 +242,7 @@ const MessageContainer = () => {
             </div>
           )}
 
-        {message.sender._id !== userInfo.id ? 
+        {message.sender.id !== userInfo.id ? 
           <div className="flex items-center justify-start gap-3">
             <Avatar className="h-8 w-8  rounded-full overflow-hidden">
               {message.sender?.image && (
@@ -256,9 +257,14 @@ const MessageContainer = () => {
                   message.sender?.color
                 )}`}
               >
-                {message.sender?.firstname
-                  ? message.sender?.firstname.split("").shift()
-                  : message.sender?.email.split("").shift()}
+                {
+                  
+                  console.log(message.firstname + " Sender name")
+                  // message.sender?.firstname
+                  // ? message.sender?.firstname.split("").shift()
+                  // : message.sender?.email.split("").shift() 
+                 
+                }
               </AvatarFallback>
             </Avatar>
             <span className="text-sm textwhite/60 ">{`${message.sender.firstname} ${message.sender.lastname}`}</span>

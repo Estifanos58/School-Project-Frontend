@@ -16,6 +16,8 @@ const MessageBar = () => {
   const fileInputRef = useRef();
   // const {userInfo} = useAppStore()
 
+  // console.log("Selected Chat Type" + JSON.stringify(selectedChatType))
+
   useEffect(()=>{
     const handleClickOutside = (event) => {
       if (emojiRef.current && !emojiRef.current.contains(event.target)) {
@@ -51,9 +53,10 @@ const MessageBar = () => {
         recipient: selectedChatData.id,
       });
     } else if (selectedChatType === "channel") {
+      console.log("channel info"+ JSON.stringify(selectedChatData))
       socket?.sendMessage({
         ...payload,
-        channelId: selectedChatData._id,
+        channelId: selectedChatData.id,
       });
     }
   
@@ -107,7 +110,7 @@ const MessageBar = () => {
           } else if (selectedChatType === "channel") {
             socket.sendMessage({
               ...payload,
-              channelId: selectedChatData._id,
+              channelId: selectedChatData.id,
             });
           }
         }

@@ -85,7 +85,7 @@ export const SocketProvider = ({ children }) => {
       (selectedChatData.id === message.sender ||
         selectedChatData.id === message.recipient)
     ) {
-      console.log("MESSAGE RECEIVED IN SOCKET CONTEXT");
+      // console.log("MESSAGE RECEIVED IN SOCKET CONTEXT");
       console.log(
         "THIS IS WHAT IS BEING SENT TO ADD MESSAGE",
         JSON.stringify(message)
