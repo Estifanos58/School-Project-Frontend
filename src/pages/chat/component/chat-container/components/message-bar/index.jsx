@@ -57,6 +57,7 @@ const MessageBar = () => {
       socket?.sendMessage({
         ...payload,
         channelId: selectedChatData.id,
+        recipient: null,
       });
     }
   

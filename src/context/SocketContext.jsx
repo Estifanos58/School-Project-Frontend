@@ -101,12 +101,21 @@ export const SocketProvider = ({ children }) => {
   // Send message function
   const sendMessage = (message) => {
     console.log("Sending message: ", { ...message });
+    
     if (stompClient.current && stompClient.current.connected) {
+      if(selectedChatType === "channel"){
+        stompClient.current.send(
+          "/app/chat.sendChannelMessage",
+          {},
+          JSON.stringify(message));
+
+      } else{
       stompClient.current.send(
         "/app/chat.sendMessage",
         {},
         JSON.stringify(message)
       );
+    }
     } else {
       console.error("WebSocket is not connected!");
     }
