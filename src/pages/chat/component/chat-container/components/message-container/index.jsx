@@ -38,6 +38,7 @@ const MessageContainer = () => {
         );
         // console.log(response.data, "this is the response i get from message");
         if (response.data) {
+          // console.log(response.data, "this is the response i get from message");
           setSelectedChatMessages(response.data);
         }
       } catch (error) {
@@ -49,7 +50,7 @@ const MessageContainer = () => {
     const getChannelMessages = async ()=> {
       try {
         const response = await apiClient.get(
-          `${GET_CHANNEL_MESSAGES}/${selectedChatData._id}`,
+          `${GET_CHANNEL_MESSAGES}/${selectedChatData.id}`,
           { withCredentials: true }
         );
        
@@ -63,11 +64,20 @@ const MessageContainer = () => {
     }
 
 
-    if (selectedChatData._id) {
-      if (selectedChatType === "contact") getMessages();
-      else if(selectedChatType === "channel") getChannelMessages();
+    if (selectedChatData.id) {
+      if (selectedChatType === "contact") {
+        console.log("THIS IS THE CONTACT TYPE")
+        getMessages()
+      } else if(selectedChatType === "channel") {
+        console.log("THIS IS THE CHANNEL TYPE")
+        getChannelMessages()
+      };
     }
   }, [selectedChatType, selectedChatData, setSelectedChatMessages]);
+
+  console.log("THIS IS THE SELECETED CHAT DATA ID" , selectedChatData.id)
+  console.log("THIS IS THE SELECTED CHAT TYPE", selectedChatType)
+  console.log("THIS IS THE SELECTED CHAT MESSAGES", JSON.stringify(selectedChatMessages))
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -87,7 +97,7 @@ const MessageContainer = () => {
       const messageDate = moment(message.timestamp).format("YYYY-MM-DD");
       const showDate = messageDate !== lastDate;
       lastDate = messageDate;
-      // console.log(message, "hellow")
+      console.log(message, "hellow")
 
       return (
         <div key={index}>
@@ -132,7 +142,7 @@ const MessageContainer = () => {
   };
 
   const renderDMMessages = (message) => (
-    console.log("MEssaage "+JSON.stringify(message)),
+    // console.log("MEssaage "+JSON.stringify(message)),
     <div
       className={`flex ${
         message.sender === selectedChatData.id

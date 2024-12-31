@@ -11,7 +11,14 @@ export const useSocket = () => {
 
 export const SocketProvider = ({ children }) => {
   const stompClient = useRef(null);
-  const { userInfo } = useAppStore();
+  const { userInfo, set } = useAppStore();
+  const {
+    selectedChatData,
+    selectedChatType,
+    addMessage,
+    addContactsInDmContacts,
+    addChannelInChannelList,
+  } = useAppStore.getState();
 
   useEffect(() => {
     if (userInfo) {
@@ -71,13 +78,6 @@ export const SocketProvider = ({ children }) => {
 
   // Handle received messages
   const handleReceiveMessage = (message) => {
-    const {
-      selectedChatData,
-      selectedChatType,
-      addMessage,
-      addContactsInDmContacts,
-      addChannelInChannelList,
-    } = useAppStore.getState();
 
     // Process only if the current chat matches the sender or recipient
     if (
