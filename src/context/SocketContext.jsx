@@ -38,9 +38,9 @@ export const SocketProvider = ({ children }) => {
             handleReceiveMessage(JSON.parse(message.body));
           });
 
-          stompClient.current.subscribe("/user/queue/channel-messages", (message) => {
+          stompClient.current.subscribe("/queue/channel-messages", (message) => {
             console.log("Received channel message: ", message.body);
-            handleReceiveMessage(JSON.parse(message.body));
+            handleChannelReceive(JSON.parse(message.body));
           });
 
           // Optional broadcast subscription for testing
@@ -76,26 +76,31 @@ export const SocketProvider = ({ children }) => {
     }
   }, [userInfo]);
 
-  // Handle received messages
+  // Handle received direct messages
   const handleReceiveMessage = (message) => {
-
-    // Process only if the current chat matches the sender or recipient
     if (
       selectedChatType !== undefined &&
       (selectedChatData.id === message.sender ||
         selectedChatData.id === message.recipient)
     ) {
-      // console.log("MESSAGE RECEIVED IN SOCKET CONTEXT");
-      console.log(
-        "THIS IS WHAT IS BEING SENT TO ADD MESSAGE",
-        JSON.stringify(message)
-      );
+      console.log("THIS IS WHAT IS BEING SENT TO ADD MESSAGE", JSON.stringify(message));
       addMessage(message);
     }
+  };
+  console.log("SELECTED CHAT DATA", selectedChatData?.id);
+  console.log("SELECTED CHAT TYPE", selectedChatType);
 
-    // Update contact or channel lists if required
-    // addContactsInDmContacts(message);
-    // addChannelInChannelList(message);
+  // Handle received channel messages
+  const handleChannelReceive = (message) => {
+    console.log("MESSAGE IN RESEIVE", JSON.stringify(message))
+    if (
+      // selectedChatType == "channel" &&
+      // selectedChatData?.id == message.channelId
+      true
+    ) {
+      console.log("CHANNEL MESSAGE RECEIVED: ", JSON.stringify(message));
+      addMessage(message);
+    }
   };
 
   // Send message function
