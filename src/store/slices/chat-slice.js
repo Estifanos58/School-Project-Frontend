@@ -8,6 +8,7 @@ export const createChatSlice = (set, get) => ({
   fileUploadProgress: 0,
   fileDownloadProgress: 0,
   channels: [],
+
   setChannels: (channels) => set({ channels }),
   setIsUploading: (isUploading) => set({ isUploading }),
   setIsDownloading: (isDownloading) => set({ isDownloading }),
@@ -15,83 +16,68 @@ export const createChatSlice = (set, get) => ({
   setFileDownloadProgress: (fileDownloadProgress) => set({ fileDownloadProgress }),
   setSelectedChatType: (selectedChatType) => set({ selectedChatType }),
   setSelectedChatData: (selectedChatData) => set({ selectedChatData }),
-  setSelectedChatMessages: (selectedChatMessages) =>
-    set({ selectedChatMessages }),
-  setDirectMessagesContacts: (directMessagesContacts) =>
-    set({ directMessagesContacts }),
-  addChannel: (channel)=>{
+  setSelectedChatMessages: (selectedChatMessages) => set({ selectedChatMessages }),
+  setDirectMessagesContacts: (directMessagesContacts) => set({ directMessagesContacts }),
+
+  addChannel: (channel) => {
     const channels = get().channels;
-    set({channels: [channel, ...channels]});
+    set({ channels: [channel, ...channels] });
   },
+
   closedChat: () =>
     set({
       selectedChatType: undefined,
       selectedChatData: undefined,
       selectedChatMessages: [],
     }),
-    addMessage: (message) => {
-      const selectedChatMessages = get().selectedChatMessages;
-    
-      set({
-        selectedChatMessages: [
-          ...selectedChatMessages,
-          {
-            ...message,
-            recipient: message.recipient, // Use as is (string ID)
-            sender: message.sender,     // Use as is (string ID)
-          },
-        ],
-      });
-    },
-    
-  // addMessage: (message) => {
-  //   const selectedChatMessages = get().selectedChatMessages;
-  //   const selectedChatType = get().selectedChatType;
 
-  //   set({
-  //     selectedChatMessages: [
-  //       ...selectedChatMessages,
-  //       {
-  //         ...message,
-  //         recipient:
-  //           selectedChatType === "channel"
-  //             ? message.recipient
-  //             : message.recipient.id,
-  //         sender:
-  //           selectedChatType === "channel"
-  //             ? message.sender
-  //             : message.sender.id,
-  //       },
-  //     ],
-  //   });
-  // },
-  addChannelInChannelList: (message) => {
-    const channels = get().channels;
-    const data = channels.find((channel)=> channel.id === message.channelId);
-    const index = channels.findIndex((channel)=> channel.id === message.channelId)
-    if(index !== -1 && index !== undefined){
-      channels.splice(index,1);
-      channels.unshift(data);
+  addMessage: (message) => {
+    const selectedChatMessages = get().selectedChatMessages;
+
+    // Avoid duplicates by checking the message ID
+    const isDuplicate = selectedChatMessages.some((msg) => msg.id === message.id);
+
+    if (!isDuplicate) {
+      const updatedMessages = [...selectedChatMessages, message];
+
+      // Sort messages by timestamps
+      updatedMessages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+      set({ selectedChatMessages: updatedMessages });
     }
   },
 
-  addContactsInDmContacts: (message)=>{
-    console.log("contact In dm" +JSON.stringify(message))
+  addChannelInChannelList: (message) => {
+    let channels = [...get().channels]; // Clone array
+    const index = channels.findIndex((channel) => channel.id === message.channelId);
+
+    if (index !== -1) {
+      const [channel] = channels.splice(index, 1); // Remove and get the channel
+      channels.unshift(channel); // Move to the top
+    }
+
+    set({ channels });
+  },
+
+  addContactsInDmContacts: (message) => {
     const userId = get().userInfo.id;
     const fromId = message.sender === userId ? message.recipient : message.sender;
     const fromData = message.sender === userId ? message.recipient : message.sender;
-    const dmContacts = get().directMessagesContacts;
-    const data = dmContacts.find((contact)=>
-      console.log("contact" + JSON.stringify(contact))
-      // contact.id === fromId
-      );
-    const index = dmContacts.findIndex((contact)=> contact.id === fromId);
-    if(index !== 1 && index !== undefined){
-      dmContacts.splice(index,1);
-      dmContacts.unshift(data);
-    }else{
+
+    let dmContacts = [...get().directMessagesContacts]; // Clone array
+
+    // Find the contact by ID
+    const index = dmContacts.findIndex((contact) => contact.id === fromId);
+
+    if (index !== -1) {
+      // Move existing contact to the top
+      const [contact] = dmContacts.splice(index, 1);
+      dmContacts.unshift(contact);
+    } else {
+      // Add new contact to the top
       dmContacts.unshift(fromData);
     }
-    set({directMessagesContacts});
-  }
+
+    set({ directMessagesContacts: dmContacts }); // Update state
+  },
 });

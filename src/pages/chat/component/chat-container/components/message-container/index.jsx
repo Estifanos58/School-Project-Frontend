@@ -24,60 +24,45 @@ const MessageContainer = () => {
   const [showImage, setshowImage] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
 
-  // console.log("THIS IS THE SELECTED CHAT MESSAGE FROM CONTAINER" + JSON.stringify(selectedChatMessages))
-  // console.log("THIS IS the user we have "+ JSON.stringify(selectedChatData.id))
-
   useEffect(() => {
     const getMessages = async () => {
-      // console.log("THIS IS the user we have "+ JSON.stringify(selectedChatData))
       try {
         const response = await apiClient.post(
           GET_ALL_MESSAGES_ROUTE,
           { id: selectedChatData.id },
           { withCredentials: true }
         );
-        // console.log(response.data, "this is the response i get from message");
         if (response.data) {
-          // console.log(response.data, "this is the response i get from message");
           setSelectedChatMessages(response.data);
         }
       } catch (error) {
         console.log(error);
       }
     };
-    getMessages();
 
-    const getChannelMessages = async ()=> {
+    const getChannelMessages = async () => {
       try {
         const response = await apiClient.get(
           `${GET_CHANNEL_MESSAGES}/${selectedChatData.id}`,
           { withCredentials: true }
         );
-       
+
         if (response.data) {
-          console.log(response.data,"group")
           setSelectedChatMessages(response.data);
         }
       } catch (error) {
         console.log(error);
       }
-    }
-
+    };
 
     if (selectedChatData.id) {
       if (selectedChatType === "contact") {
-        console.log("THIS IS THE CONTACT TYPE")
-        getMessages()
-      } else if(selectedChatType === "channel") {
-        console.log("THIS IS THE CHANNEL TYPE")
-        getChannelMessages()
-      };
+        getMessages();
+      } else if (selectedChatType === "channel") {
+        getChannelMessages();
+      }
     }
   }, [selectedChatType, selectedChatData, setSelectedChatMessages]);
-
-  console.log("THIS IS THE SELECETED CHAT DATA ID" , selectedChatData.id)
-  console.log("THIS IS THE SELECTED CHAT TYPE", selectedChatType)
-  console.log("THIS IS THE SELECTED CHAT MESSAGES", JSON.stringify(selectedChatMessages))
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -97,7 +82,6 @@ const MessageContainer = () => {
       const messageDate = moment(message.timestamp).format("YYYY-MM-DD");
       const showDate = messageDate !== lastDate;
       lastDate = messageDate;
-      console.log(message, "hellow")
 
       return (
         <div key={index}>
@@ -106,8 +90,7 @@ const MessageContainer = () => {
               {moment(message.timestamp).format("LL")}
             </div>
           )}
-          {selectedChatType === "contact" && renderDMMessages(message)}
-          {selectedChatType === "channel" && renderChannelMessage(message)}
+          {renderMessageContent(message)}
         </div>
       );
     });
@@ -141,90 +124,25 @@ const MessageContainer = () => {
     }
   };
 
-  const renderDMMessages = (message) => (
-    // console.log("MEssaage "+JSON.stringify(message)),
-    <div
-      className={`flex ${
-        message.sender === selectedChatData.id
-          ? "justify-start"
-          : "justify-end"
-      } my-1`}
-    >
-      <div
-        className={`${
-          message.sender !== selectedChatData.id
-            ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50"
-            : "bg-[#2a2b33]/5 text-white/80 border-white/20"
-        } border inline-block p-3 rounded-lg max-w-[70%] break-words shadow-md transition-transform duration-200 transform hover:scale-105`}
-      >
-        {message.messageType === "text" && message.content}
-      </div>
-      {message.messageType === "file" && (
-        <div
-          className={`${
-            message.sender !== selectedChatData.id
-              ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50"
-              : "bg-[#2a2b33]/5 text-white/80 border-white/20"
-          } border inline-block p-3 rounded-lg max-w-[70%] break-words shadow-md transition-transform duration-200 transform hover:scale-105`}
-        >
-          {checkImage(message.fileUrl) ? (
-            <div
-              className="cursor-pointer"
-              onClick={() => {
-                setshowImage(true);
-                setImageUrl(message.fileUrl);
-              }}
-            >
-              <img src={`${HOST}${message.fileUrl}`} height={300} width={300} />
-            </div>
-          ) : (
-            <div className="flex items-center justify-center gap-4">
-              <span className="text-white/8- text-3xl bg-black/20 rounded-full p-3">
-                <MdFolderZip />
-              </span>
-              <span>{message.fileUrl.split("/").pop()}</span>
-              <span
-                className="bg-black/20 p-3 rounded-full hover:bg-black/50 cursor-pointer transition-all duration-300"
-                onClick={() => downloadFile(message.fileUrl)}
-              >
-                <ImFolderDownload />
-              </span>
-            </div>
-          )}
-        </div>
-      )}
-      <div className="text-xs text-gray-600 ml-2 self-end">
-        {moment(message.timestamp).format("LT")}
-      </div>
-    </div>
-  );
+  const renderMessageContent = (message) => {
+    const isCurrentUser = message.sender === userInfo.id;
+    const isChannel = selectedChatType === "channel";
 
-  const renderChannelMessage = (message) => {
-    console.log("Channel Message "+JSON.stringify(message));
+    const bubbleClass = isCurrentUser
+      ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50"
+      : "bg-[#2a2b33]/5 text-white/80 border-white/20";
+
     return (
       <div
-        className={`mt-5 ${
-          message.sender.id !== userInfo.id ? "text-left" : "text-right"
-        }`}
+        className={`flex ${isCurrentUser ? "justify-end" : "justify-start"} my-1`}
       >
         <div
-          className={`${
-            message.sender.id !== userInfo.id
-              ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50"
-              : "bg-[#2a2b33]/5 text-white/80 border-white/20"
-          } border inline-block p-3 rounded-lg max-w-[70%] break-words shadow-md ml-9 transition-transform duration-200 transform hover:scale-105`}
+          className={`border inline-block p-3 rounded-lg max-w-[70%] break-words shadow-md transition-transform duration-200 transform hover:scale-105 ${bubbleClass}`}
         >
           {message.messageType === "text" && message.content}
-        </div>
 
-            {message.messageType === "file" && (
-            <div
-              className={`${
-                message.sender.id === userInfo._id
-                  ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50"
-                  : "bg-[#2a2b33]/5 text-white/80 border-white/20"
-              } border inline-block p-3 rounded-lg max-w-[70%] break-words shadow-md transition-transform duration-200 transform hover:scale-105`}
-            >
+          {message.messageType === "file" && (
+            <div>
               {checkImage(message.fileUrl) ? (
                 <div
                   className="cursor-pointer"
@@ -233,11 +151,15 @@ const MessageContainer = () => {
                     setImageUrl(message.fileUrl);
                   }}
                 >
-                  <img src={`${HOST}${message.fileUrl}`} height={300} width={300} />
+                  <img
+                    src={`${HOST}${message.fileUrl}`}
+                    height={300}
+                    width={300}
+                  />
                 </div>
               ) : (
                 <div className="flex items-center justify-center gap-4">
-                  <span className="text-white/8- text-3xl bg-black/20 rounded-full p-3">
+                  <span className="text-white/80 text-3xl bg-black/20 rounded-full p-3">
                     <MdFolderZip />
                   </span>
                   <span>{message.fileUrl.split("/").pop()}</span>
@@ -251,10 +173,11 @@ const MessageContainer = () => {
               )}
             </div>
           )}
+        </div>
 
-        {message.sender.id !== userInfo.id ? 
-          <div className="flex items-center justify-start gap-3">
-            <Avatar className="h-8 w-8  rounded-full overflow-hidden">
+        {!isCurrentUser && isChannel && (
+          <div className="flex items-center justify-start gap-3 ml-2">
+            <Avatar className="h-8 w-8 rounded-full overflow-hidden">
               {message.sender?.image && (
                 <AvatarImage
                   src={`${HOST}${message.sender.image}`}
@@ -267,31 +190,21 @@ const MessageContainer = () => {
                   message.sender?.color
                 )}`}
               >
-                {
-                  // console.log("THIS IS THE MESSAGE SENDER "+JSON.stringify(message.senderName)) 
-                  message?.senderName && message?.senderName.split("").shift()
-                  // : message.sender?.email.split("").shift() 
-                 
-                }
+                {message?.senderName && message?.senderName[0]}
               </AvatarFallback>
             </Avatar>
-            <span className="text-sm textwhite/60 ">{`${message.senderName}`}</span>
+            <span className="text-sm text-white/60">{`${message.senderName}`}</span>
             <span className="text-xs text-white/60">
               {moment(message.timestamp).format("LT")}
             </span>
-          </div>: 
-          <div>
-              <div className="text-xs text-white/60 mt-1">
-              {moment(message.timestamp).format("LT")}
-               </div>
           </div>
-        }
+        )}
       </div>
     );
   };
 
   return (
-    <div className="flex flex-col overflow-y-auto scrollbar-hidd p-4 md:w-[65vw] lg:w-[70vw] xl:w-[80vw] w-full">
+    <div className="flex flex-col overflow-y-auto scrollbar-hidden p-4 md:w-[65vw] lg:w-[70vw] xl:w-[80vw] w-full">
       {renderMessages()}
       <div ref={scrollRef} />
       {showImage && (
@@ -301,7 +214,7 @@ const MessageContainer = () => {
             alt="image"
             className="h-[70vh] w-[70vw] bg-cover"
           />
-          <button className=" gap-5 fixed top-0 mt-[95px] ml-[50%] w-[30px] h-[30px] bg-slate-600">
+          <button className="gap-5 fixed top-0 mt-[95px] ml-[50%] w-[30px] h-[30px] bg-slate-600">
             <ImFolderDownload
               className="h-[100%] w-[100%]"
               onClick={() => downloadFile(imageUrl)}
