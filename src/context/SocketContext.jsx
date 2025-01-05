@@ -78,14 +78,14 @@ export const SocketProvider = ({ children }) => {
 
   // Handle received direct messages
   const handleReceiveMessage = (message) => {
-    if (
-      selectedChatType !== undefined &&
-      (selectedChatData.id === message.sender ||
-        selectedChatData.id === message.recipient)
-    ) {
+    // if (
+    //   selectedChatType !== undefined &&
+    //   (selectedChatData.id === message.sender ||
+    //     selectedChatData.id === message.recipient)
+    // ) {
       console.log("THIS IS WHAT IS BEING SENT TO ADD MESSAGE", JSON.stringify(message));
       addMessage(message);
-    }
+    // }
   };
   console.log("SELECTED CHAT DATA", selectedChatData?.id);
   console.log("SELECTED CHAT TYPE", selectedChatType);

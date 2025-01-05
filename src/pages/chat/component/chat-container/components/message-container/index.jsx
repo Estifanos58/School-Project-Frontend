@@ -46,7 +46,7 @@ const MessageContainer = () => {
           `${GET_CHANNEL_MESSAGES}/${selectedChatData.id}`,
           { withCredentials: true }
         );
-
+        console.log("CHANNEL MESSAGE RECEIVED", response)
         if (response.data) {
           setSelectedChatMessages(response.data);
         }
