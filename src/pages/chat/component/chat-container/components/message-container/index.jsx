@@ -268,16 +268,14 @@ const MessageContainer = () => {
                 )}`}
               >
                 {
-                  
-                  console.log(message.firstname + " Sender name")
-                  // message.sender?.firstname
-                  // ? message.sender?.firstname.split("").shift()
+                  // console.log("THIS IS THE MESSAGE SENDER "+JSON.stringify(message.senderName)) 
+                  message?.senderName && message?.senderName.split("").shift()
                   // : message.sender?.email.split("").shift() 
                  
                 }
               </AvatarFallback>
             </Avatar>
-            <span className="text-sm textwhite/60 ">{`${message.sender.firstname} ${message.sender.lastname}`}</span>
+            <span className="text-sm textwhite/60 ">{`${message.senderName}`}</span>
             <span className="text-xs text-white/60">
               {moment(message.timestamp).format("LT")}
             </span>
