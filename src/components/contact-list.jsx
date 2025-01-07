@@ -2,6 +2,7 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 import { HOST } from "@/utils/constants";
 import { useAppStore } from "@/store";
 import { getColor } from "@/lib/utils";
+import { MdGroups } from "react-icons/md";
 
 function ContactList({ contacts, isChannel = false }) {
   const {
@@ -29,14 +30,14 @@ function ContactList({ contacts, isChannel = false }) {
         // console.log("Contact List "+ JSON.stringify(contact))
         return (
           <div
-            className={`pl-10 py-2 transition-all duration-300 cursor-pointer ${
+            className={`pl-10 py-2 transition-all duration-300  cursor-pointer ${
               selectedChatData && selectedChatData.id 
-                ? "bg-[#8417ff] hover:bg-[#8417ff]"
-                : "hover:bg-[#f1f1f111]"
+                // ? "bg-[#8417ff] hover:bg-[#8417ff]"
+                // : "hover:bg-[#f1f1f111]"
             }`}
             onClick={() => handleClick(contact)}
           >
-            <div className="flex gap-5 items-center justify-start text-neutral-300">
+            <div className="flex gap-5 items-center justify-start  text-neutral-300">
               {!isChannel && (
                 <Avatar className="h-10 w-10  rounded-full overflow-hidden">
                   {contact?.image ? (
@@ -64,7 +65,7 @@ function ContactList({ contacts, isChannel = false }) {
               )}
               {isChannel && (
                 <div className="bg-[#ffffff22] h-10 w-10 flex items-center justify-center rounded-full text-3xl">
-                  #
+                  <MdGroups />
                 </div>
               )}
               {isChannel ? (
