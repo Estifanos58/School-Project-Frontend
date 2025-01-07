@@ -124,8 +124,8 @@ const MessageBar = () => {
   
 
   return (
-    <div className="h-[10vh] absolute bottom-0 w-[70%] bg-[#1c1d25] flex justify-center items-center px-8 mb-6 gap-6">
-      <div className="flex-1 flex bg-[#2a2b33] rounded-md items-center gap-5 pr-5">
+    <div className="h-[10vh] absolute bottom-0 w-[70%] bg-[#121212] flex justify-center items-center px-8 mb-6 gap-6">
+      <div className="flex-1 h-[45px] flex bg-[#2a2b33] rounded-md items-center gap-5 pr-5">
         <input
           type="text"
           className="flex-1 p-5 bg-transparent rounded-md focus:outline-none"
@@ -155,10 +155,10 @@ const MessageBar = () => {
         </div>
       </div>
       <button
-        className="bg-[#00BFA6] rounded-md flex items-center justify-center p-5 hover:bg-[#741bda] focus:bg-[#741bda] focus:border-none focus:outline-none focus:text-white duration-300 transition"
+        className="bg-[#00BFA6] h-[45px] w-[45px] rounded-full flex items-center justify-center  hover:bg-[#7af1e1] focus:bg-[#7af1e1] focus:border-none focus:outline-none focus:text-white duration-300 transition"
         onClick={handleSendMessage}
       >
-        <IoSend className="text-2xl" />
+        <IoSend className="" />
       </button>
     </div>
   );

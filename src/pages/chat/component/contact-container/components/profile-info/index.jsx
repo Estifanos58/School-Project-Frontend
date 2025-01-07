@@ -32,7 +32,7 @@ const ProfileInfo = () => {
   }
 
   return (
-    <div className=" h-16 flex items-center justify-between px-10 w-full bg-[#2a2b33] ">
+    <div className=" h-16 flex items-center justify-between pl-10 w-full bg-[#181818] ">
         <div className="flex gap-3 items-center justify-center">
             <div className="w-12 h-12 relative">
             <Avatar className="h-12 w-12  rounded-full overflow-hidden">
@@ -65,7 +65,7 @@ const ProfileInfo = () => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <FiEdit2 className="text-purple-500 text-xl font-medium" onClick={()=>navigate('/profile')}/>
+                <FiEdit2 className="text-[#00BFA6] text-xl font-medium" onClick={()=>navigate('/profile')}/>
               </TooltipTrigger>
               <TooltipContent className="bg-[#1c1b1e] border-none text-white ">
                 Edit Profile
