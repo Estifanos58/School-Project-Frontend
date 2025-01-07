@@ -93,7 +93,7 @@ const CreateChannel = () => {
               className="text-neutral-400 font-light text-opacity-90 text-start hover:text-neutral-100 cursor-pointer transition-all duration-300 "
               onClick={() => setNewChannelModel(true)}
             /> */}
-            <MdGroupAdd className="text-neutral-400 font-light text-opacity-90 text-start hover:text-neutral-100 cursor-pointer transition-all duration-300 "
+            <MdGroupAdd className="text-neutral-400 font-light text-opacity-90 text-start hover:text-neutral-100 cursor-pointer mr-5 transition-all duration-300 "
               onClick={() => setNewChannelModel(true)} />
           </TooltipTrigger>
           <TooltipContent className="bg-[#1c1b1e] border-none mb-2 p-2 text-white">

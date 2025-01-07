@@ -72,7 +72,7 @@ const NewDm = () => {
               className="text-neutral-400 font-light text-opacity-90 text-start hover:text-neutral-100 cursor-pointer transition-all duration-300 "
               onClick={() => setOpenNewContact(true)}
             /> */}
-            <IoPersonAddSharp className="text-neutral-400 font-light text-opacity-90 text-start hover:text-neutral-100 cursor-pointer transition-all duration-300 "
+            <IoPersonAddSharp className="text-neutral-400 font-light text-opacity-90 text-start mr-5 hover:text-neutral-100 cursor-pointer transition-all duration-300 "
               onClick={() => setOpenNewContact(true)} />
           </TooltipTrigger>
           <TooltipContent className="bg-[#1c1b1e] border-none mb-2 p-2 text-white">

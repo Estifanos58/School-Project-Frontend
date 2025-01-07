@@ -78,7 +78,7 @@ const MessageContainer = () => {
   const renderMessages = () => {
     let lastDate = null;
     return selectedChatMessages.map((message, index) => {
-      const messageDate = moment(message.timestamp).format("YYYY-MM-DD");
+      const messageDate = moment(message.timestamps).format("YYYY-MM-DD"); // Updated field
       const showDate = messageDate !== lastDate;
       lastDate = messageDate;
       // console.log(message, "hellow")
@@ -87,7 +87,7 @@ const MessageContainer = () => {
         <div key={index}>
           {showDate && (
             <div className="text-center text-gray-500 my-2 font-semibold">
-              {moment(message.timestamp).format("LL")}
+              {moment(message.timestamps).format("LL")}
             </div>
           )}
           {selectedChatType === "contact" && renderDMMessages(message)}
@@ -177,7 +177,7 @@ const MessageContainer = () => {
         </div>
       )}
       <div className="text-xs text-gray-600 ml-2 self-end">
-        {moment(message.timestamp).format("LT")}
+        {moment(message.timestamps).format("LT")}
       </div>
     </div>
   );
@@ -255,12 +255,12 @@ const MessageContainer = () => {
             </Avatar>
             <span className="text-sm textwhite/60 ">{`${message.senderName}`}</span>
             <span className="text-xs text-white/60">
-              {moment(message.timestamp).format("LT")}
+              {moment(message.timestamps).format("LT")}
             </span>
           </div>: 
           <div>
               <div className="text-xs text-white/60 mt-1">
-              {moment(message.timestamp).format("LT")}
+              {moment(message.timestamps).format("LT")}
                </div>
           </div>
         }
@@ -269,7 +269,7 @@ const MessageContainer = () => {
   };
 
   return (
-    <div className="flex h-[70%] flex-col overflow-y-auto scrollbar-hidden p-4 md:w-[70vw] lg:w-[65vw] xl:w-[75vw] w-full">
+    <div className="flex h-[78%] flex-col overflow-y-auto scrollbar-hidden p-4 md:w-[70vw] lg:w-[65vw] xl:w-[75vw] w-full">
       {renderMessages()}
       <div ref={scrollRef} />
       {showImage && (
