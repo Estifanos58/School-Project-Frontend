@@ -20,6 +20,7 @@ import { CREATE_CHANNEL_ROUTE, GET_ALL_CONTACTS } from "@/utils/constants";
 import { useAppStore } from "@/store";
 import { Button } from "@/components/ui/button";
 import MultipleSelector from "@/components/ui/multipleselect";
+import { MdGroupAdd } from "react-icons/md";
 
 const CreateChannel = () => {
   const { setSelectedChatType, setSelectedChatData, addChannel } = useAppStore();
@@ -88,10 +89,12 @@ const CreateChannel = () => {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
-            <FaPlus
+            {/* <FaPlus
               className="text-neutral-400 font-light text-opacity-90 text-start hover:text-neutral-100 cursor-pointer transition-all duration-300 "
               onClick={() => setNewChannelModel(true)}
-            />
+            /> */}
+            <MdGroupAdd className="text-neutral-400 font-light text-opacity-90 text-start hover:text-neutral-100 cursor-pointer transition-all duration-300 "
+              onClick={() => setNewChannelModel(true)} />
           </TooltipTrigger>
           <TooltipContent className="bg-[#1c1b1e] border-none mb-2 p-2 text-white">
             Create New Channel
@@ -132,7 +135,7 @@ const CreateChannel = () => {
           </div>
           <div>
             <Button
-              className="w-full bg-purple-700 hover:bg-purple-900 transition-all duration-300"
+              className="w-full bg-[#00BFA6] hover:bg-[#78eada] transition-all duration-300"
               onClick={createChannel}
             >
               Create Channel

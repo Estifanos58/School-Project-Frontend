@@ -79,7 +79,8 @@ const MessageContainer = () => {
   const renderMessages = () => {
     let lastDate = null;
     return selectedChatMessages.map((message, index) => {
-      const messageDate = moment(message.timestamp).format("YYYY-MM-DD");
+      // const messageDate = moment(message.timestamp).format("YYYY-MM-DD");
+      const messageDate = moment.utc(message.timestamp).format("YYYY-MM-DD");
       const showDate = messageDate !== lastDate;
       lastDate = messageDate;
 
@@ -87,7 +88,7 @@ const MessageContainer = () => {
         <div key={index}>
           {showDate && (
             <div className="text-center text-gray-500 my-2 font-semibold">
-              {moment(message.timestamp).format("LL")}
+              {moment.utc(message.timestamp).format("LL")}
             </div>
           )}
           {renderMessageContent(message)}
@@ -174,37 +175,12 @@ const MessageContainer = () => {
             </div>
           )}
         </div>
-
-        {!isCurrentUser && isChannel && (
-          <div className="flex items-center justify-start gap-3 ml-2">
-            <Avatar className="h-8 w-8 rounded-full overflow-hidden">
-              {message.sender?.image && (
-                <AvatarImage
-                  src={`${HOST}${message.sender.image}`}
-                  alt="profile"
-                  className="object-cover w-full h-full bg-black"
-                />
-              )}
-              <AvatarFallback
-                className={`uppercase h-8 w-8 text-lg border-[1px] flex items-center justify-center rounded-full ${getColor(
-                  message.sender?.color
-                )}`}
-              >
-                {message?.senderName && message?.senderName[0]}
-              </AvatarFallback>
-            </Avatar>
-            <span className="text-sm text-white/60">{`${message.senderName}`}</span>
-            <span className="text-xs text-white/60">
-              {moment(message.timestamp).format("LT")}
-            </span>
-          </div>
-        )}
       </div>
     );
   };
 
   return (
-    <div className="flex flex-col h-[70%] overflow-y-auto scrollbar-hidden p-4 md:w-[65vw] lg:w-[60vw] xl:w-[70vw] w-full">
+    <div className="flex flex-col h-[70%] overflow-y-auto p-4 md:w-[65vw] lg:w-[60vw] xl:w-[70vw] w-full custom-scrollbar">
       {renderMessages()}
       <div ref={scrollRef} />
       {showImage && (
