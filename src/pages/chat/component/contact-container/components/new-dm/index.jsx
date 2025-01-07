@@ -21,6 +21,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { AvatarImage } from "@/components/ui/avatar";
 import { getColor } from "@/lib/utils";
 import { useAppStore } from "@/store";
+import { IoPersonAddSharp } from "react-icons/io5";
 
 const NewDm = () => {
   const { setSelectedChatType, setSelectedChatData } = useAppStore();
@@ -67,13 +68,15 @@ const NewDm = () => {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
-            <FaPlus
+            {/* <FaPlus
               className="text-neutral-400 font-light text-opacity-90 text-start hover:text-neutral-100 cursor-pointer transition-all duration-300 "
               onClick={() => setOpenNewContact(true)}
-            />
+            /> */}
+            <IoPersonAddSharp className="text-neutral-400 font-light text-opacity-90 text-start hover:text-neutral-100 cursor-pointer transition-all duration-300 "
+              onClick={() => setOpenNewContact(true)} />
           </TooltipTrigger>
           <TooltipContent className="bg-[#1c1b1e] border-none mb-2 p-2 text-white">
-            Select New Contact
+            ADD New Contact
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
