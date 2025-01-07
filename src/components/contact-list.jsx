@@ -26,10 +26,10 @@ function ContactList({ contacts, isChannel = false }) {
 
   return (
     <div className="mt-5">
-      {contacts?.map((contact) => {
+      {contacts?.map((contact, index) => {
         // console.log("Contact List "+ JSON.stringify(contact))
         return (
-          <div
+          <div key={index}
             className={`pl-10 py-2 transition-all duration-300  cursor-pointer ${
               selectedChatData && selectedChatData.id 
                 // ? "bg-[#8417ff] hover:bg-[#8417ff]"
