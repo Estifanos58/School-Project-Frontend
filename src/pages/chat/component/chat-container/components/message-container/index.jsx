@@ -129,7 +129,7 @@ const MessageContainer = () => {
     const isChannel = selectedChatType === "channel";
 
     const bubbleClass = isCurrentUser
-      ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50"
+      ? "bg-[#00BFA6] text-[#000]/90 border-[#8417ff]/50"
       : "bg-[#2a2b33]/5 text-white/80 border-white/20";
 
     return (
