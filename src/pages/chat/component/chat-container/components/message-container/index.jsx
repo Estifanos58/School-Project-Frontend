@@ -136,7 +136,7 @@ const MessageContainer = () => {
       <div
         className={`${
           message.sender !== selectedChatData.id
-            ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50"
+            ? "bg-[#00BFA6] text-[#000] border-[#8417ff]/50"
             : "bg-[#2a2b33]/5 text-white/80 border-white/20"
         } border inline-block p-3 rounded-lg max-w-[70%] break-words shadow-md transition-transform duration-200 transform hover:scale-105`}
       >
@@ -146,7 +146,7 @@ const MessageContainer = () => {
         <div
           className={`${
             message.sender !== selectedChatData.id
-              ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50"
+              ? "bg-[#8417ff]/5 text-[#000] border-[#8417ff]/50"
               : "bg-[#2a2b33]/5 text-white/80 border-white/20"
           } border inline-block p-3 rounded-lg max-w-[70%] break-words shadow-md transition-transform duration-200 transform hover:scale-105`}
         >
@@ -193,7 +193,7 @@ const MessageContainer = () => {
         <div
           className={`${
             message.sender !== userInfo.id
-              ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50"
+              ? "bg-[#00BFA6] text-[#000] border-[#8417ff]/50"
               : "bg-[#2a2b33]/5 text-white/80 border-white/20"
           } border inline-block p-3 rounded-lg max-w-[70%] break-words shadow-md ml-9 transition-transform duration-200 transform hover:scale-105`}
         >
@@ -269,7 +269,7 @@ const MessageContainer = () => {
   };
 
   return (
-    <div className="flex flex-col overflow-y-auto scrollbar-hidden p-4 md:w-[65vw] lg:w-[70vw] xl:w-[80vw] w-full">
+    <div className="flex h-[70%] flex-col overflow-y-auto scrollbar-hidden p-4 md:w-[70vw] lg:w-[65vw] xl:w-[75vw] w-full">
       {renderMessages()}
       <div ref={scrollRef} />
       {showImage && (
