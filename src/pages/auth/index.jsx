@@ -103,53 +103,81 @@ const Auth = () => {
     }
 
     return (
-        <div className="h-[100vh] w-[100vw] flex items-center justify-center">
-            <div className=" bg-white h-[90%] border-2 border-white text-opacity-90 shadow-2xl w-[80vw] md:w-[90vw] lg:w-[70vw] xl:w-[60vw] rounded-3xl">
-                <div className="flex  flex-col w-[100%] bg-white h-[100%] items-center justify-space-between">
-                    <div className="flex  mb-5 items-center justify-center flex-col">
-                        <div className="flex items-center justify-center">
-                            <h1 className="text-5xl font-bold md:text-6xl"><span className='from-fuchsia-700'>KASINA CHAT</span></h1>
-                            <img src={Victory} alt="Victory Emoji" className="h-[100px]" />
-                        </div>
-                        <p className="font-medium text-center">Let's Help you Connect!</p>
+        <div className="bg-[#121212] text-white min-h-[100vh] w-[100vw] flex items-center justify-center">
+        <div className="h-[100%] py-5 border-2 border-[#6A0DAD] text-opacity-90 shadow-2xl w-[80vw] md:w-[90vw] lg:w-[70vw] xl:w-[60vw] rounded-3xl">
+            <div className="flex bg-[#1E1E1E] flex-col w-[100%] h-[100%] items-center justify-space-between">
+                <div className="flex mb-5 items-center justify-center flex-col">
+                    <div className="flex items-center justify-center">
+                        <h1 className="text-5xl font-bold md:text-6xl text-[#FFFFFF]">
+                            <span className="text-[#9C27B0] text-2xl lg:text-6xl ">KASINA CHAT</span>
+                        </h1>
+                        <img src={Victory} alt="Victory Emoji" className="h-[100px]" />
                     </div>
-                    <div className="flex items-center justify-center w-full">
-                        <Tabs className="w-3/4" defaultValue='login'>
-                            <TabsList className="bg-transparent rounded-none w-full">
-                                <TabsTrigger value="login" className="data-[state=active]:bg-transparent text-black text-opacity-90 border-b-2 rounded-none w-full data-[state=active]:text-black data-[state=active]:font-semibold data-[state=active]:border-b-purple-500 p-3 transition-all">Login</TabsTrigger>
-                                <TabsTrigger value="signup" className="data-[state=active]:bg-transparent text-black text-opacity-90 border-b-2 rounded-none w-full data-[state=active]:text-black data-[state=active]:font-semibold data-[state=active]:border-b-purple-500 p-3 transition-all">SignUp</TabsTrigger>
-                            </TabsList>
-                            <TabsContent className="flex flex-col gap-5 mt-10" value="login">
-                                <Input placeholder="Email" type="email"
-                                    className="rounded-full p-6"
-                                    value={email}
-                                    onChange={(e) => setemail(e.target.value)} />
-                                <Input placeholder="Password" type="password"
-                                    className="rounded-full p-6"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)} />
-                                <Button className="rounded-full p-6" onClick={handleLogin}>{!isLoading ? "Login" : "Loading..."}</Button>
-                            </TabsContent>
-                            <TabsContent className="flex flex-col gap-5" value="signup">
-                                <Input placeholder="Email" type="email"
-                                        className="rounded-full p-6"
-                                        value={email}
-                                        onChange={(e) => setemail(e.target.value)} />
-                                    <Input placeholder="Password" type="password"
-                                        className="rounded-full p-6"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)} />
-                                     <Input placeholder="Confirm Password" type="password"
-                                        className="rounded-full p-6"
-                                        value={confirmPassword}
-                                        onChange={(e) => setconfirmPassword(e.target.value)} />
-                                        <Button className="rounded-full p-6" onClick={handleSignup}>{!isLoading? "SignUp": "Loading..."}</Button>
-                            </TabsContent>
-                        </Tabs>
-                    </div>
-                </div>   
+                    <p className="font-medium text-center text-[#B0B0B0]">
+                        Let's Help you Connect!
+                    </p>
+                </div>
+                <div className="flex items-center justify-center w-full">
+                    <Tabs className="w-3/4" defaultValue="login">
+                        <TabsList className="bg-transparent rounded-none w-full">
+                            <TabsTrigger value="login" className="data-[state=active]:bg-transparent text-[#B0B0B0] text-opacity-90 border-b-2 rounded-none w-full data-[state=active]:text-[#007BFF] data-[state=active]:font-semibold data-[state=active]:border-b-[#6A0DAD] p-3 transition-all">
+                                Login
+                            </TabsTrigger>
+                            <TabsTrigger value="signup" className="data-[state=active]:bg-transparent text-[#B0B0B0] text-opacity-90 border-b-2 rounded-none w-full data-[state=active]:text-[#007BFF] data-[state=active]:font-semibold data-[state=active]:border-b-[#6A0DAD] p-3 transition-all">
+                                SignUp
+                            </TabsTrigger>
+                        </TabsList>
+                        <TabsContent className="flex flex-col gap-5 mt-10 text-white" value="login">
+                            <Input
+                                placeholder="Email"
+                                type="email"
+                                className="rounded-full p-6 bg-[#2C2C2C] text-white placeholder-[#B0B0B0] focus:border-[#6A0DAD]"
+                                value={email}
+                                onChange={(e) => setemail(e.target.value)}
+                            />
+                            <Input
+                                placeholder="Password"
+                                type="password"
+                                className="rounded-full p-6 bg-[#2C2C2C] text-white placeholder-[#B0B0B0] focus:border-[#6A0DAD]"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                            <Button className="rounded-full p-6 bg-[#007BFF] hover:bg-[#58A6FF] text-white" onClick={handleLogin}>
+                                {!isLoading ? "Login" : "Loading..."}
+                            </Button>
+                        </TabsContent>
+                        <TabsContent className="flex flex-col gap-5 text-white" value="signup">
+                            <Input
+                                placeholder="Email"
+                                type="email"
+                                className="rounded-full p-6 bg-[#2C2C2C] text-white placeholder-[#B0B0B0] focus:border-[#6A0DAD]"
+                                value={email}
+                                onChange={(e) => setemail(e.target.value)}
+                            />
+                            <Input
+                                placeholder="Password"
+                                type="password"
+                                className="rounded-full p-6 bg-[#2C2C2C] text-white placeholder-[#B0B0B0] focus:border-[#6A0DAD]"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                            <Input
+                                placeholder="Confirm Password"
+                                type="password"
+                                className="rounded-full p-6 bg-[#2C2C2C] text-white placeholder-[#B0B0B0] focus:border-[#6A0DAD]"
+                                value={confirmPassword}
+                                onChange={(e) => setconfirmPassword(e.target.value)}
+                            />
+                            <Button className="rounded-full p-6 bg-[#007BFF] hover:bg-[#58A6FF] text-white" onClick={handleSignup}>
+                                {!isLoading ? "SignUp" : "Loading..."}
+                            </Button>
+                        </TabsContent>
+                    </Tabs>
+                </div>
             </div>
         </div>
+    </div>
+    
     )
 }
 
