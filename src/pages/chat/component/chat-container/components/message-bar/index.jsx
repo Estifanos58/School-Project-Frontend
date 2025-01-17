@@ -124,8 +124,8 @@ const MessageBar = () => {
   
 
   return (
-    <div className="h-[10vh] absolute bottom-0 w-[70%] bg-[#121212] flex justify-center items-center px-8 mb-3 gap-6">
-      <div className="flex-1 h-[45px] flex bg-[#2a2b33] rounded-md items-center gap-5 pr-5">
+    <div className="h-[10vh] absolute bottom-0 w-[100%] lg:w-[70%] bg-[#121212] flex justify-center items-center px-8 mb-3 gap-2 lg:gap-6">
+      <div className="flex-1 h-[45px] w-[85%] flex bg-[#2a2b33] rounded-md items-center lg:gap-5 lg:pr-5">
         <input
           type="text"
           className="flex-1 p-5 bg-transparent rounded-md focus:outline-none"
@@ -134,19 +134,22 @@ const MessageBar = () => {
           onChange={(e) => setMessage(e.target.value)}
         />
         <button className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-300 transition-all" onClick={handleAttachmentClick}>
-          <GrAttachment className="text-2xl" />
+          <GrAttachment className="text-2xl mr-[5px]" />
         </button>
         <input type='file' className="hidden" ref={fileInputRef} onChange={handleAttachmentChange} />
         <div className="relative">
           <button
-            className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-300 transition"
+            className="text-neutral-500 focus:border-none  focus:outline-none focus:text-white duration-300 transition"
             onClick={() => setEmojiPickerOpen(!emojiPickerOpen)}
           >
-            <RiEmojiStickerFill className="text-2xl" />
+            <RiEmojiStickerFill className="text-2xl mr-[14px]" />
           </button>
-          <div ref={emojiRef} className="absolute bottom-16 right-0">
+          <div ref={emojiRef} className="absolute  bottom-16 right-0">
             <EmojiPicker
               theme="dark"
+              className="text-sm "
+              width={300}
+              height={300}
               open={emojiPickerOpen}
               onEmojiClick={handleAddEmoji}
               autoFocusSearch={false}
@@ -155,7 +158,7 @@ const MessageBar = () => {
         </div>
       </div>
       <button
-        className="bg-[#00BFA6] h-[45px] w-[45px] rounded-full flex items-center justify-center  hover:bg-[#7af1e1] focus:bg-[#7af1e1] focus:border-none focus:outline-none focus:text-white duration-300 transition"
+        className="bg-[#00BFA6] h-[35px] w-[35px]  lg:w-[45px] lg:h-[45px] rounded-full flex items-center justify-center  hover:bg-[#7af1e1] focus:bg-[#7af1e1] focus:border-none focus:outline-none focus:text-white duration-300 transition"
         onClick={handleSendMessage}
       >
         <IoSend className="" />
