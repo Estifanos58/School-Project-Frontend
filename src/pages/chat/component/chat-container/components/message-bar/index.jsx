@@ -124,7 +124,7 @@ const MessageBar = () => {
   
 
   return (
-    <div className="h-[10vh] absolute bottom-0 w-[100%] lg:w-[70%] bg-[#121212] flex justify-center items-center px-8 mb-3 gap-2 lg:gap-6">
+    <div className="h-[10vh] absolute bottom-0 w-[100%] md:w-[60%] lg:w-[70%] bg-[#121212] flex justify-center items-center px-8 mb-3 gap-2 lg:gap-6">
       <div className="flex-1 h-[45px] w-[85%] flex bg-[#2a2b33] rounded-md items-center lg:gap-5 lg:pr-5">
         <input
           type="text"
@@ -147,9 +147,7 @@ const MessageBar = () => {
           <div ref={emojiRef} className="absolute  bottom-16 right-0">
             <EmojiPicker
               theme="dark"
-              className="text-sm "
-              width={300}
-              height={300}
+              className="text-sm"
               open={emojiPickerOpen}
               onEmojiClick={handleAddEmoji}
               autoFocusSearch={false}
