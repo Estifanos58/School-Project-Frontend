@@ -37,7 +37,7 @@ const ContactContainer = () => {
   // console.log("Direct Messages "+ JSON.stringify(directMessagesContacts))
 
   return (
-    <div className='relative md:w-[40vw] lg:w-[30vw] xl:w-[25vw] pr-0 bg-[#181818] border-r-2 border-[#2f303b] w-full'>
+    <div className='relative md:w-[40vw] lg:w-[30vw] xl:w-[25vw] pr-0 bg-[#181818] border-r-2 border-[#181818] w-full'>
      <div className="pt-3">
      <ProfileInfo />
     

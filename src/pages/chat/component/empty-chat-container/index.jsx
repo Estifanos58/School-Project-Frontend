@@ -5,13 +5,14 @@ const EmptyChatContainer = () => {
   return (
     <div className="flex-1 md:bg-[#1c1d25] md:flex flex-col justify-center items-center hidden duration-1000 transition-all">
   
-      <h1 className="text-3xl">No Messages Yet 😒</h1>
       <div className="text-opacity-80 text-white flex flex-col gap-5 items-center mt-10 lg:text-4xl text-3xl transition-all duration-300 text-center">
         <h3 className="poppins-medium">
           Hi <span className="text-purple-500">!</span> Welcome to
           <span className="text-purple-500"> KASINA</span> Chat App{" "}
           <span className="text-purple-500">.</span>
         </h3>
+      
+      <h1 className="text-3xl mt-[20px]">Select a chat to start messaging 👍</h1>
       </div>
     </div>
   );
