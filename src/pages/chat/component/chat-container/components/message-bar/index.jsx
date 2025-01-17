@@ -134,7 +134,7 @@ const MessageBar = () => {
           onChange={(e) => setMessage(e.target.value)}
         />
         <button className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-300 transition-all" onClick={handleAttachmentClick}>
-          <GrAttachment className="text-2xl mr-[5px]" />
+          <GrAttachment className="text-2xl mr-[5px] lg:mr-[1px]" />
         </button>
         <input type='file' className="hidden" ref={fileInputRef} onChange={handleAttachmentChange} />
         <div className="relative">
@@ -142,7 +142,7 @@ const MessageBar = () => {
             className="text-neutral-500 focus:border-none  focus:outline-none focus:text-white duration-300 transition"
             onClick={() => setEmojiPickerOpen(!emojiPickerOpen)}
           >
-            <RiEmojiStickerFill className="text-2xl mr-[14px]" />
+            <RiEmojiStickerFill className="text-2xl mr-[14px] lg:mr-[1px]" />
           </button>
           <div ref={emojiRef} className="absolute  bottom-16 right-0">
             <EmojiPicker

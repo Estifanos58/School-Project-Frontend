@@ -64,7 +64,7 @@ const NewDm = () => {
   };
 
   return (
-    <>
+    <div>
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
@@ -81,9 +81,9 @@ const NewDm = () => {
         </Tooltip>
       </TooltipProvider>
       <Dialog open={openNewContact} onOpenChange={setOpenNewContact}>
-        <DialogContent className="bg-[#181920] border-none text-white w-[480px] h-[400px] flex flex-col">
+        <DialogContent className="bg-[#181920] border-none text-white w-[70%] h-[70%] lg:w-[480px] lg:h-[400px] flex flex-col">
           <DialogHeader>
-            <DialogTitle>Please select a contact</DialogTitle>
+            <DialogTitle className="text-1xl">Please select a contact</DialogTitle>
             <DialogDescription></DialogDescription>
           </DialogHeader>
           <div>
@@ -135,13 +135,13 @@ const NewDm = () => {
             </div>
           </ScrollArea>
           {searchedContacts.length <= 0 && (
-            <div className="text-2xl flex flex-col justify-center items-center h-[100%]">
+            <div className="text-2xl flex flex-col justify-center items-center mt-[-150px] h-[100%]">
               There is no Contact 😒
             </div>
           )}
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   );
 };
 
