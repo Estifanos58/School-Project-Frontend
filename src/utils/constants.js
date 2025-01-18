@@ -10,7 +10,7 @@ export const USER_ROUTES = "api/user";
 export const GET_USER_INFO = `${USER_ROUTES}/info`
 export const UPDATE_PROFILE_ROUTE = `${USER_ROUTES}/update-profile`
 export const ADD_PROFILE_IMAGE_ROUTE = `${USER_ROUTES}/add-profile-image`
-export const REMOVE_PROFILE_IMAGE_ROUTE = `${USER_ROUTES}/remove-profile-image`
+export const REMOVE_PROFILE_IMAGE_ROUTE = `${USER_ROUTES}/remove-profileImage`
 
 
 export const CONTACTS_ROUTES = "api/contacts";
