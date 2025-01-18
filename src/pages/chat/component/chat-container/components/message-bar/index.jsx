@@ -106,7 +106,7 @@ const MessageBar = () => {
           if (selectedChatType === "contact") {
             socket.sendMessage({
               ...payload,
-              recipient: selectedChatData._id,
+              recipient: selectedChatData.id,
             });
           } else if (selectedChatType === "channel") {
             socket.sendMessage({

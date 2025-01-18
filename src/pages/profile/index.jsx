@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { apiClient } from "@/lib/api-client";
 import { ADD_PROFILE_IMAGE_ROUTE, REMOVE_PROFILE_IMAGE_ROUTE, UPDATE_PROFILE_ROUTE , HOST} from "@/utils/constants";
 import { useNavigate } from "react-router-dom";
+import imageCompression from 'browser-image-compression';  
 
 const Profile = () => {
   const { userInfo , setUserInfo} = useAppStore();
@@ -36,6 +37,7 @@ const Profile = () => {
       setImage(`${HOST}${userInfo.image}`)
     }
   },[userInfo])
+  console.log("USERINFO", Image)
 
 
   const validateProfile = () => {
@@ -54,9 +56,10 @@ const Profile = () => {
     if (validateProfile()) {
       try {
         setLoading(true);
-        const response = await apiClient.put(
+
+        const response = await apiClient.post(
           UPDATE_PROFILE_ROUTE,
-          { firstname: firstName, lastname: LastName, color: selectedColor },
+          { firstname: firstName, lastname: LastName, color: selectedColor, image: Image?Image:null },
           { withCredentials: true }
         );
         if(response.status === 200 && response.data){
@@ -85,25 +88,29 @@ const Profile = () => {
     fileinputRef.current.click();
   }
 
-  const handleImageChange = async (event) =>{
-    const file  = event.target.files[0];
-    console.log(file)
-    if(file){
-      const reader = new FileReader();
-      reader.onload = () =>{
-        setImage(reader.result)
-      };
-      reader.readAsDataURL(file);
-    }
-    const formData = new FormData();
-    formData.append('profile-image', file);
-    const response = await apiClient.post(ADD_PROFILE_IMAGE_ROUTE, formData,{withCredentials: true});
-    if(response.status === 200 && response.data.image){
-      // setImage(URL.createObjectURL(file));
-      setUserInfo({...userInfo, image: response.data.image})
-      toast.success('Image uploaded successfully')
-    }
+  const handleImageChange = async (event)=>{
+    const file = event.target.files[0];
+    try {  
+      // Compress the image  
+      const options = {  
+        maxSizeMB: 1, // Maximum size in MB  
+        maxWidthOrHeight: 1920, // Maximum width or height  
+        useWebWorker: true, // Use web worker for faster processing  
+      };  
+      const compressedFile = await imageCompression(file, options);  
+
+      // Convert the compressed file to Base64  
+      const reader = new FileReader();  
+      reader.onloadend = () => {  
+        setImage(reader.result); // This will be the Base64 string 
+        console.log("Image uploaded", Image) 
+      };  
+      reader.readAsDataURL(compressedFile);  
+    } catch (error) {  
+      console.error('Error compressing or converting to Base64:', error);  
+    } 
   }
+
 
   const handleDeleteImage = async () =>{
     try {
