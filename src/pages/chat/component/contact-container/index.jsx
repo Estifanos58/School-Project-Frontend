@@ -7,6 +7,8 @@ import { useAppStore } from '@/store';
 import ContactList from '@/components/contact-list';
 import CreateChannel from './components/create-channel';
 import KASINA from '@/assets/KASINA.png';
+import { IoSearchSharp } from "react-icons/io5";
+
 
 const ContactContainer = () => {
 
@@ -41,6 +43,16 @@ const ContactContainer = () => {
      <div className="pt-3">
      <ProfileInfo />
     
+     </div>
+     <div className="my-5">
+      <div className="flex items-center mr-10 ml-10 rounded-lg bg-[#444343]">
+        {/* <Title text="Search"/> */}
+        <IoSearchSharp className='pl-3 text-3xl'/>
+        <input type="text" className=' bg-[#444343] text-white border-white'/>
+      </div>
+      {/* <div className="max-h-[40vh] overflow-y-auto scrollbar-hidden"> 
+        <ContactList contacts={directMessagesContacts}/>
+      </div> */}
      </div>
      <div className="my-5">
       <div className="flex items-center justify-between pr-18">
