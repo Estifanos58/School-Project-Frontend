@@ -18,6 +18,8 @@ const ContactContainer = () => {
   const [searchedContacts, setSearchedContacts] = useState([]);
   const { setDirectMessagesContacts, directMessagesContacts, channels, setChannels } = useAppStore();
   const { setSelectedChatType, setSelectedChatData } = useAppStore();
+  const [openNewContact, setOpenNewContact] = useState(false);
+
 
   // const { setSelectedChatType, setSelectedChatData } = useAppStore();
 
@@ -75,10 +77,11 @@ const ContactContainer = () => {
       setOpenNewContact(false);
       setSelectedChatType("contact");
       setSelectedChatData(contact);
+      console.log("SELECTED CHAT CONTACT", contact)
       setSearchedContacts([]);
     };
 
-  // console.log("Here "+channels)
+  // console.log("Here search"+ contact)
   // console.log("Direct Messages "+ JSON.stringify(directMessagesContacts))
 
   return (
@@ -93,8 +96,9 @@ const ContactContainer = () => {
         <IoSearchSharp className='pl-3 text-3xl'/>
         <input type="text" className=' bg-[#444343] pl-3 text-white outline-none border-white' placeholder='Search' onChange={(e) => searchContacts(e.target.value)}/>
       </div>
-      <div className='min-h-0 mt-1 py-3 rounded-3xl bg-[#2c2b2b] w-[76%] flex flex-col m-auto'>
+      <div className='min-h-0  mt-1  rounded-3xl bg-[#2c2b2b] w-[76%] flex flex-col m-auto'>
               {searchedContacts.map((contact, index) => (
+                
                 <div
                   className="flex gap-3 mb-1 ml-3 items-center cursor-pointer"
                   key={index}
@@ -104,7 +108,7 @@ const ContactContainer = () => {
                     <Avatar className="h-12 w-12  rounded-full overflow-hidden">
                       {contact.image ? (
                         <AvatarImage
-                          src={`${HOST}${contact.image}`}
+                          src={contact.image}
                           alt="profile"
                           className="object-cover w-full h-full bg-black"
                         />
