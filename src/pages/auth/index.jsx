@@ -51,11 +51,13 @@ const Auth = () => {
             try {
                 setLoading(true)
                 const response = await apiClient.post(LOGIN_ROUTE,{email, password,})
-                console.log(response.data)
+                console.log("Login" + JSON.stringify(response))
                 if(response.data.id){
-                    setUserInfo(response.data.user)
+                    setUserInfo(response.data)
                     setLoading(false)
-                    if(response.data.user.profileSetup) navigate('/chat');
+                    if(response.data.profileSetup) {
+                        toast.success("Successfull Login!! ");
+                        navigate('/chat');}
                     else navigate('/profile');
                 }else{
                     setLoading(false)
@@ -80,10 +82,11 @@ const Auth = () => {
                 console.log(email, password)
                 setLoading(true)
                 const response = await apiClient.post(SIGNUP_ROUTES,{email,password})
-                console.log(response.status)
+                console.log("Sign up"+ JSON.stringify(response))
                 if(response.data){
-                    setUserInfo(response.data.user)
+                    setUserInfo(response.data)
                     setLoading(false)
+                    toast.success("Successfull SignUp!! ");
                     navigate('/profile')
                 }else{
                     setLoading(false)
