@@ -144,7 +144,7 @@ const ContactContainer = () => {
      <div className="my-5">
       <div className="flex items-center justify-between pr-18">
         <Title text="Private"/>
-        <NewDm/>
+        {/* <NewDm/> */}
       </div>
       <div className="max-h-[40vh] overflow-y-auto scrollbar-hidden"> 
         <ContactList contacts={directMessagesContacts}/>

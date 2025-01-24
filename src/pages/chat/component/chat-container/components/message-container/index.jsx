@@ -238,16 +238,16 @@ const MessageContainer = () => {
         {message.sender !== userInfo.id ? 
           <div className="flex items-center justify-start gap-3">
             <Avatar className="h-8 w-8  rounded-full overflow-hidden">
-              {message.sender?.image && (
+              {message?.image && (
                 <AvatarImage
-                  src={`${HOST}${message.sender.image}`}
+                  src={message.image}
                   alt="profile"
                   className="object-cover w-full h-full bg-black"
                 />
               )}
               <AvatarFallback
                 className={`uppercase h-8 w-8 text-lg border-[1px] flex items-center justify-center rounded-full ${getColor(
-                  message?.color
+                  message.color
                 )}`}
               >
                 {message?.senderName && message?.senderName.split("").shift()}
