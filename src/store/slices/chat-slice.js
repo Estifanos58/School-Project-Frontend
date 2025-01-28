@@ -1,3 +1,7 @@
+import { GET_SPECIFIC_USER } from '@/utils/constants';
+import { apiClient } from '@/lib/api-client';
+
+
 export const createChatSlice = (set, get) => ({
   selectedChatType: undefined,
   selectedChatData: undefined,
@@ -59,25 +63,39 @@ export const createChatSlice = (set, get) => ({
     set({ channels });
   },
 
-  addContactsInDmContacts: (message) => {
-    const userId = get().userInfo.id;
-    const fromId = message.sender === userId ? message.recipient : message.sender;
-    const fromData = message.sender === userId ? message.recipient : message.sender;
-
+  addContactsInDmContacts: async (message) => {
+    const userId = get().userInfo.id; // Current user's ID from userInfo
+    const fromId = message.sender === userId ? message.recipient : message.sender; // ID of the other user
+    
     let dmContacts = [...get().directMessagesContacts]; // Clone array
-
-    // Find the contact by ID
+  
+    // Check if the contact is already in the list
     const index = dmContacts.findIndex((contact) => contact.id === fromId);
-
+  
     if (index !== -1) {
       // Move existing contact to the top
       const [contact] = dmContacts.splice(index, 1);
       dmContacts.unshift(contact);
     } else {
-      // Add new contact to the top
-      dmContacts.unshift(fromData);
+      try {
+        // Fetch user data from the backend
+        const response = await apiClient.post(
+          GET_SPECIFIC_USER,
+                    { userId: fromId }, // Send searchTerm in the request body
+                    { withCredentials: true }
+                  );
+  
+        const userData = await response.data;
+  
+        // Add the new contact to the top of the list
+        dmContacts.unshift(userData);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
     }
-
-    set({ directMessagesContacts: dmContacts }); // Update state
+  
+    // Update state
+    set({ directMessagesContacts: dmContacts });
   },
-});
+}
+);  

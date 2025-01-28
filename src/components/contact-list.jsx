@@ -27,7 +27,7 @@ function ContactList({ contacts, isChannel = false }) {
   return (
     <div className="mt-5">
       {contacts?.map((contact, index) => {
-        // console.log("Contact List "+ JSON.stringify(contact))
+        console.log("Contact List "+ JSON.stringify(contact?.firstname))
         return (
           <div key={index}
             className={`pl-10 py-2 transition-all duration-300  cursor-pointer ${
@@ -42,23 +42,23 @@ function ContactList({ contacts, isChannel = false }) {
                 <Avatar className="h-10 w-10  rounded-full overflow-hidden">
                   {contact?.image ? (
                     <AvatarImage
-                      src={contact.image}
+                      src={contact?.image}
                       alt="profile"
                       className="object-cover w-full h-full bg-black"
                     />
                   ) : (
                     <div
                       className={` ${
-                        selectedChatData?.id === contact.id
+                        selectedChatData?.id === contact?.id
                           ? "bg-[#ffffff22] border-white/70 border"
-                          : getColor(contact.color)
+                          : getColor(contact?.color)
                       } uppercase h-10 w-10 text-lg border-[1px] flex items-center justify-center rounded-full ${getColor(
                         contact?.color
                       )}`}
                     >
                       {contact?.firstname
                         ? contact?.firstname.split("").shift()
-                        : contact.email.split("").shift()}
+                        : contact?.email.split("").shift()}
                     </div>
                   )}
                 </Avatar>
@@ -69,13 +69,13 @@ function ContactList({ contacts, isChannel = false }) {
                 </div>
               )}
               {isChannel ? (
-                <span>{contact.name}</span>
-              ) : contact.firstName ? (
+                <span>{contact?.name}</span>
+              ) : contact?.firstName ? (
                 <span>
-                  {contact.firstName} {contact.lastName}
+                  {contact?.firstName} {contact?.lastName}
                 </span>
               ) : (
-                <span>{contact.email}</span>
+                <span>{contact?.email}</span>
               )}
             </div>
           </div>

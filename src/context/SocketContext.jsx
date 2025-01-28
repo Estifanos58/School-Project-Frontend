@@ -2,6 +2,8 @@ import { useAppStore } from "@/store";
 import { createContext, useContext, useEffect, useRef } from "react";
 import * as Stomp from "stompjs";
 import SockJS from "sockjs-client";
+import { GET_SPECIFIC_USER } from "@/utils/constants";
+import { apiClient } from '@/lib/api-client';
 
 const SocketContext = createContext(null);
 
@@ -85,8 +87,13 @@ export const SocketProvider = ({ children }) => {
     // ) {
       console.log("THIS IS WHAT IS BEING SENT TO ADD MESSAGE", JSON.stringify(message));
       addMessage(message);
+      console.log("THis is the person info", JSON.stringify(selectedChatData?.id))
+      addContactsInDmContacts(message);
+      // handleADDuser(message);
     // }
   };
+
+
   console.log("SELECTED CHAT DATA", selectedChatData?.id);
   console.log("SELECTED CHAT TYPE", selectedChatType);
 
@@ -100,6 +107,7 @@ export const SocketProvider = ({ children }) => {
     ) {
       console.log("CHANNEL MESSAGE RECEIVED: ", JSON.stringify(message));
       addMessage(message);
+      // addChannelInChannelList(message);
     }
   };
 
