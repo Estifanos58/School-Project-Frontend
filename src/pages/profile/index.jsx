@@ -31,9 +31,6 @@ const Profile = () => {
       setSelectedColor(userInfo?.color)
     }
     if(userInfo.image){
-      console.log()
-    }
-    if(userInfo.image){
       setImage(userInfo.image)
     }
   },[userInfo])

@@ -32,7 +32,7 @@ const App = () => {
           setUserInfo(response.data);  
           console.log(response.data);  
         } else {  
-          setUserInfo(null); // Setting to null for clarity  
+          setUserInfo(null); // Setting to null for clari
         }  
       } catch (err) {  
         console.error(err);  
