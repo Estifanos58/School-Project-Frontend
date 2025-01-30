@@ -55,7 +55,8 @@ const ContactContainer = () => {
           const response = await apiClient.post(
             SEARCH_CONTACTS_ROUTES,
             { searchTerm }, // Send searchTerm in the request body
-            { withCredentials: true }
+            { withCredentials: true },
+          //  { headers: { Authorization: `Bearer ${token}` }},
           );
   
           console.log("Response Data:", response.data); // Log raw data

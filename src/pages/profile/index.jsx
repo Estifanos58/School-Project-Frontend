@@ -59,7 +59,7 @@ const Profile = () => {
 
         const response = await apiClient.post(
           UPDATE_PROFILE_ROUTE,
-          { firstname: firstName, lastname: LastName, color: selectedColor, image: Image?Image:null },
+          { firstname: firstName, lastname: LastName, color: selectedColor, image: Image?Image:""},
           { withCredentials: true }
         );
         if(response.status === 200 && response.data){

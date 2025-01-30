@@ -1,4 +1,4 @@
-export const HOST = import.meta.env.VITE_SERVER_URL || "http://localhost:9090/";
+export const HOST = import.meta.env.VITE_SERVER_URL || "https://school-project-r88b.onrender.com/";
 console.log(HOST)
 
 export const AUTH_ROUTES = "api/auth";

@@ -12,6 +12,7 @@ export const useSocket = () => {
 };
 
 export const SocketProvider = ({ children }) => {
+ 
   const stompClient = useRef(null);
   const { userInfo, set } = useAppStore();
   const {
@@ -25,7 +26,7 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     if (userInfo) {
       // Establish WebSocket connection with SockJS and STOMP
-      const socket = new SockJS("http://localhost:9090/ws");
+      const socket = new SockJS("https://school-project-r88b.onrender.com/ws");
       stompClient.current = Stomp.over(socket);
 
       // Connect with user-specific headers
@@ -34,11 +35,12 @@ export const SocketProvider = ({ children }) => {
         () => {
           console.log("WebSocket connected!");
 
-          // Subscribe to user-specific queues
+          // Subscribe to direct messages
           stompClient.current.subscribe("/topic/public", (message) => {
             console.log("Received direct message: ", message.body);
             handleReceiveMessage(JSON.parse(message.body));
           });
+          
 
           stompClient.current.subscribe("/queue/channel-messages", (message) => {
             console.log("Received channel message: ", message.body);
