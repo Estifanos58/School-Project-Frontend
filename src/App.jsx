@@ -47,7 +47,7 @@ const App = () => {
     } else {  
       setLoading(false);  
     }  
-  }, [userInfo, setUserInfo]);  
+  }, [userInfo, setUserInfo]);  //userinfo
 
   if (isLoading) {  
     return <div className='h-[100vh] w-[100vw] flex justify-center items-center font-bold text-2xl'>Loading ...</div>;  
